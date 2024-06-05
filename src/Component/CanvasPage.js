@@ -570,23 +570,24 @@ const DesignCanvas = ({ width = 600, height = 400, animationStyle, setAnimationS
     
       let step = 0;
       const fadeInOrder = Array.from({ length: charObjects.length }, (_, i) => i).sort(() => Math.random() - 0.5);
-    
       const animate = () => {
         fadeInOrder.forEach((charIndex, orderIndex) => {
           if (step >= orderIndex) {
             const charObject = charObjects[charIndex];
             const progress = Math.min(1, (step - orderIndex) * fadeRate);
             const blurLevel = maxBlur * (1 - progress);
-    
+            const text = charObject.text.trim(); // Remove extra spaces
+      
             charObject.set({
+              text: text, // Set the text without extra spaces
               opacity: progress,
               // shadow: `0 0 ${blurLevel}px rgba(0, 0, 0, 0.5)`,
             });
           }
         });
-    
+      
         canvas.renderAll();
-    
+      
         if (step < charObjects.length + 1 / fadeRate) {
           step++;
           setTimeout(animate, animationTypeSpeed);
