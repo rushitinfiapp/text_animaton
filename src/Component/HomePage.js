@@ -20,18 +20,19 @@ export default function HomePage() {
   const [data, setData] = useState(initialData.children || []);
   const animationText = useRef(null)
   const addNewText = () => {
-    const newText = {
-      id: `text-${data.length + 1}`,
-      name: `text-${data.length + 1}`,
-      type: 'text',
-      text: 'New Text',
-      fontFamily: 'Arial',
-      fontSize: 14,
-      width: 100,
-      height: 50,
-      x: 50,
-      y: 50,
-    };
+      const newText = {
+        id: `text-${data.length + 1}`,
+        name: `text-${data.length + 1}`,
+        type: 'text',
+        text: 'New Text',
+        fontFamily: 'Arial',
+        fontSize: 14,
+        width: 100,
+        textAlign: 'center',
+        height: 50,
+        x: 50,
+        y: 50,
+      };
     return setData(prevData => [...prevData, newText]);
   };
 
@@ -121,17 +122,19 @@ export default function HomePage() {
     <div className="homePage">
       <div className="animationFilter">
         <div className="textBox">
-          <div className="fontStyle">
+          {/* <div className="fontStyle">
             <h6>Font Styles</h6>
-          </div>
+          </div> */}
           <div className="animationText fontStyle">
             <h6>Animation Text</h6>
             <div className="styleFont">
-              <div className="fontBox">
+              {/* <div className="fontBox">
                 <button
                   className={`${animationStyle.riseAnimation ? "fontBoxButtonActive" : ""
                     }`}
-                  onClick={() => handleAnimationStyleClick("rise")}
+                  style={{opacity:"0.5"}}
+                  disabled={true}
+                    onClick={() => handleAnimationStyleClick("rise")}
                 >
                   <img src={AnimationText1} draggable={false} />
                 </button>
@@ -141,7 +144,9 @@ export default function HomePage() {
                 <button
                   className={`${animationStyle.panAnimation ? "fontBoxButtonActive" : ""
                     }`}
-                  onClick={() => handleAnimationStyleClick("pan")}
+                  style={{opacity:"0.5"}}
+                  disabled={true}
+                    onClick={() => handleAnimationStyleClick("pan")}
                 >
                   <img src={AnimationText2} draggable={false} />
                 </button>
@@ -151,16 +156,20 @@ export default function HomePage() {
                 <button
                   className={`${animationStyle.fadeAnimation ? "fontBoxButtonActive" : ""
                     }`}
-                  onClick={() => handleAnimationStyleClick("fade")}
+                  style={{opacity:"0.5"}}
+                  disabled={true}
+                    onClick={() => handleAnimationStyleClick("fade")}
                 >
                   <img src={AnimationText3} draggable={false} />
                 </button>
                 <span>Fade</span>
-              </div>
+              </div> */}
               <div className="fontBox">
                 <button
                   className={`${animationStyle.clarifyAnimation ? "fontBoxButtonActive" : ""
                     }`}
+                  style={{ opacity: `${animationStyle.clarifyAnimation === true ? "0.6" : "1"}` }}
+                  disabled={animationStyle.clarifyAnimation === true ? true : false}
                   onClick={() => handleAnimationStyleClick("clarify")}
                 >
                   <img src={AnimationText4} draggable={false} />
@@ -168,7 +177,7 @@ export default function HomePage() {
                 <span>Clarify</span>
               </div>
             </div>
-            <div className="speedProgress">
+            {/* <div className="speedProgress">
               <Stack spacing={2}>
                 <h6>Speed</h6>
                 <Slider
@@ -178,14 +187,14 @@ export default function HomePage() {
                   onChange={handleSliderChange}
                 />
               </Stack>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
       {/* <PageCom animationText={animationText} /> */}
       <div className="showCanvas">
         <div className="showPage">
-          <DesignCanvas showGrid={true}  setAnimationStyle={setAnimationStyle}animationStyle={animationStyle}>{createElements()}</DesignCanvas>
+          <DesignCanvas showGrid={true} setAnimationStyle={setAnimationStyle} animationStyle={animationStyle}>{createElements()}</DesignCanvas>
         </div>
       </div>
     </div>

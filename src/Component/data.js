@@ -7,6 +7,7 @@ export default {
         id: 'test-1',
         name: 'text-1',
         type: 'text',
+        textAlign: 'center',
         text: 'Your paragraph text',
         fontFamily: 'Arial',
         fontSize: 26,

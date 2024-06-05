@@ -90,6 +90,429 @@ const DesignCanvas = ({ width = 600, height = 400, animationStyle, setAnimationS
     }
   }, [animationStyle, selectedObject])
 
+  // const clarifyAnimation = () => {
+  //   if (selectedObject && canvas) {
+  //     canvas.discardActiveObject(); // Clear selection
+  //     const textObject = selectedObject;
+  //     const text = textObject.text;
+  //     const fadeRate = 0.02;
+  //     const maxBlur = 8;
+  //     const animationTypeSpeed = 60;
+  //     const fadeDistance = 20; // Adjust the distance each character moves during fade-in
+  //     const charSpacing = 2; // Adjust the spacing between characters
+
+  //     // Calculate the total width of the text
+  //     const totalWidth = textObject.width || textObject.measureTextWidth();
+
+  //     // Calculate the effective width of a character (including spacing)
+  //     const charWidth = (totalWidth + (text.length - 1) * charSpacing) / text.length;
+
+  //     // Calculate initial left position for the text
+  //     // const initialLeft = textObject.left - totalWidth / 2;
+  //     const initialLeft = 27;
+
+  //     // Create an array to hold individual character objects
+  //     const charObjects = [];
+
+  //     // Create individual fabric.Text objects for each character
+  //     text.split('').forEach((char, index) => {
+  //       const charObject = new fabric.Text(char, {
+  //         left: initialLeft + (charWidth + charSpacing) * index, // Distribute characters with spacing
+  //         top: textObject.top,
+  //         fontSize: textObject.fontSize,
+  //         fill: textObject.fill,
+  //         opacity: 0, // Start with opacity 0
+  //         shadow: `0 0 ${maxBlur}px rgba(0, 0, 0, 0.5)`,
+  //         selectable: false,
+  //         stroke: null, // Set stroke to null to remove it
+  //         fontWeight: 'normal'
+  //       });
+  //       charObjects.push(charObject);
+  //       canvas.add(charObject);
+  //     });
+
+  //     const randomOrder = Array.from({ length: text.length }, (_, i) => i).sort(() => Math.random() - 0.5);
+  //     let step = 0;
+
+  //     const animate = () => {
+  //       randomOrder.forEach((charIndex, index) => {
+  //         if (step >= index) {
+  //           const charObject = charObjects[charIndex];
+  //           const progress = Math.min(1, (step - index) * fadeRate);
+  //           const blurLevel = maxBlur * (1 - progress);
+  //           const initialX = initialLeft + (charWidth + charSpacing) * charIndex;
+  //           const targetX = initialX + fadeDistance; // Adjust the position based on fade progress
+
+  //           charObject.set({
+  //             opacity: progress,
+  //             shadow: `0 0 ${blurLevel}px rgba(0, 0, 0, 0.5)`,
+  //             left: initialX + (targetX - initialX) * progress,
+  //           });
+  //         }
+  //       });
+
+  //       canvas.renderAll();
+  //       if (step < text.length + 1 / fadeRate) {
+  //         step++;
+  //         setTimeout(animate, animationTypeSpeed);
+  //       } else {
+  //         textObject.set({ opacity: 1 }); // Restore original opacity
+  //         canvas.remove(...charObjects); // Clear the characters from the canvas
+  //         canvas.renderAll();
+  //         // Update animation style
+  //         setAnimationStyle({ clarifyAnimation: false });
+  //       }
+  //     };
+
+  //     // Hide the original text object after animation starts
+  //     setTimeout(() => {
+  //       textObject.set({ opacity: 0 });
+  //       canvas.renderAll();
+  //       animate();
+  //     }, animationTypeSpeed);
+  //   }
+  // };
+
+  // const clarifyAnimation = () => {
+  //   if (selectedObject && canvas) {
+  //     canvas.discardActiveObject(); // Clear selection
+  //     const textObject = selectedObject;
+  //     const text = textObject.text;
+  //     const fadeRate = 0.02;
+  //     const maxBlur = 8;
+  //     const animationTypeSpeed = 60;
+  //     const fadeDistance = 20; // Adjust the distance each character moves during fade-in
+  //     const charSpacing = 2; // Adjust the spacing between characters
+  
+  //     // Calculate the total width of the text
+  //     const totalWidth = textObject.width || textObject.measureTextWidth();
+  
+  //     // Calculate the effective width of a character (including spacing)
+  //     const charWidth = (totalWidth + (text.length - 1) * charSpacing) / text.length;
+  
+  //     // Calculate initial left position for the text
+  //     const initialLeft = textObject.left - totalWidth / 2;
+  
+  //     // Create an array to hold individual character objects
+  //     const charObjects = [];
+  
+  //     // Create individual fabric.Text objects for each character
+  //     text.split('').forEach((char, index) => {
+  //       const charObject = new fabric.Text(char, {
+  //         left: initialLeft + (charWidth + charSpacing) * index, // Distribute characters with spacing
+  //         top: textObject.top,
+  //         fontSize: textObject.fontSize,
+  //         fill: textObject.fill,
+  //         opacity: 0, // Start with opacity 0
+  //         shadow: `0 0 ${maxBlur}px rgba(0, 0, 0, 0.5)`,
+  //         selectable: false,
+  //         stroke: null, // Set stroke to null to remove it
+  //         fontWeight: 'normal'
+  //       });
+  //       charObjects.push(charObject);
+  //       canvas.add(charObject);
+  //     });
+  
+  //     let step = 0;
+  //     const fadeInOrder = Array.from({ length: text.length }, (_, i) => i).sort(() => Math.random() - 0.5);
+  
+  //     const animate = () => {
+  //       fadeInOrder.forEach((charIndex, orderIndex) => {
+  //         if (step >= orderIndex) {
+  //           const charObject = charObjects[charIndex];
+  //           const progress = Math.min(1, (step - orderIndex) * fadeRate);
+  //           const blurLevel = maxBlur * (1 - progress);
+  //           const initialX = initialLeft + (charWidth + charSpacing) * charIndex;
+  //           const targetX = initialX + fadeDistance; // Adjust the position based on fade progress
+  
+  //           charObject.set({
+  //             opacity: progress,
+  //             shadow: `0 0 ${blurLevel}px rgba(0, 0, 0, 0.5)`,
+  //             left: initialX + (targetX - initialX) * progress,
+  //           });
+  //         }
+  //       });
+  
+  //       canvas.renderAll();
+  
+  //       if (step < text.length + 1 / fadeRate) {
+  //         step++;
+  //         setTimeout(animate, animationTypeSpeed);
+  //       } else {
+  //         textObject.set({ opacity: 1 }); // Restore original opacity
+  //         canvas.remove(...charObjects); // Clear the characters from the canvas
+  //         canvas.renderAll();
+  //         // Update animation style
+  //         setAnimationStyle({ clarifyAnimation: false });
+  //       }
+  //     };
+  
+  //     // Hide the original text object after animation starts
+  //     setTimeout(() => {
+  //       textObject.set({ opacity: 0 });
+  //       canvas.renderAll();
+  //       animate();
+  //     }, animationTypeSpeed);
+  //   }
+  // };
+  // const clarifyAnimation = () => {
+  //   if (selectedObject && canvas) {
+  //     canvas.discardActiveObject(); // Clear selection
+  //     const textObject = selectedObject;
+  //     const text = textObject.text;
+  //     const fadeRate = 0.02;
+  //     const maxBlur = 8;
+  //     const animationTypeSpeed = 60;
+  //     const fadeDistance = 0; // Set to 0 to avoid significant left to right movement
+  //     const charSpacing = 2; // Adjust the spacing between characters
+  
+  //     // Get the wrapped lines of text
+  //     const lines = textObject._textLines;
+  
+  //     // Create an array to hold individual character objects
+  //     const charObjects = [];
+  //     const lineHeight = textObject.fontSize * 1.2; // Assuming line height is 1.2 times the font size
+  
+  //     lines.forEach((line, lineIndex) => {
+  //       // Measure the width of the current line
+  //       const lineWidth = textObject.__lineWidths[lineIndex];
+  //       const charWidth = (lineWidth + (line.length - 1) * charSpacing) / line.length;
+  //       const initialLeft = textObject.left - lineWidth / 2;
+  //       const yOffset = textObject.top + lineIndex * lineHeight;
+  
+  //       line.forEach((char, index) => {
+  //         const charObject = new fabric.Text(char, {
+  //           left: initialLeft + (charWidth + charSpacing) * index, // Distribute characters with spacing
+  //           top: yOffset,
+  //           fontSize: textObject.fontSize,
+  //           fill: textObject.fill,
+  //           opacity: 0, // Start with opacity 0
+  //           shadow: `0 0 ${maxBlur}px rgba(0, 0, 0, 0.5)`,
+  //           selectable: false,
+  //           stroke: null, // Set stroke to null to remove it
+  //           fontWeight: 'normal'
+  //         });
+  //         charObjects.push(charObject);
+  //         canvas.add(charObject);
+  //       });
+  //     });
+  
+  //     let step = 0;
+  //     const fadeInOrder = Array.from({ length: charObjects.length }, (_, i) => i).sort(() => Math.random() - 0.5);
+  
+  //     const animate = () => {
+  //       fadeInOrder.forEach((charIndex, orderIndex) => {
+  //         if (step >= orderIndex) {
+  //           const charObject = charObjects[charIndex];
+  //           const progress = Math.min(1, (step - orderIndex) * fadeRate);
+  //           const blurLevel = maxBlur * (1 - progress);
+  
+  //           charObject.set({
+  //             opacity: progress,
+  //             shadow: `0 0 ${blurLevel}px rgba(0, 0, 0, 0.5)`,
+  //             left: charObject.left + fadeDistance * progress, // Adjust the position based on fade progress
+  //           });
+  //         }
+  //       });
+  
+  //       canvas.renderAll();
+  
+  //       if (step < charObjects.length + 1 / fadeRate) {
+  //         step++;
+  //         setTimeout(animate, animationTypeSpeed);
+  //       } else {
+  //         textObject.set({ opacity: 1 }); // Restore original opacity
+  //         canvas.remove(...charObjects); // Clear the characters from the canvas
+  //         canvas.renderAll();
+  //         // Update animation style
+  //         setAnimationStyle({ clarifyAnimation: false });
+  //       }
+  //     };
+  
+  //     // Hide the original text object after animation starts
+  //     setTimeout(() => {
+  //       textObject.set({ opacity: 0 });
+  //       canvas.renderAll();
+  //       animate();
+  //     }, animationTypeSpeed);
+  //   }
+  // };
+  
+  // const clarifyAnimation = () => {
+  //   if (selectedObject && canvas) {
+  //     canvas.discardActiveObject(); // Clear selection
+  //     const textObject = selectedObject;
+  //     const text = textObject.text;
+  //     const fadeRate = 0.02;
+  //     const maxBlur = 8;
+  //     const animationTypeSpeed = 60;
+  //     const charSpacing = 0; // Adjust the spacing between characters
+  
+  //     // Get the wrapped lines of text
+  //     const lines = textObject._textLines;
+  
+  //     // Create an array to hold individual character objects
+  //     const charObjects = [];
+  //     const lineHeight = textObject.fontSize * 1.2; // Assuming line height is 1.2 times the font size
+  
+  //     // Store original properties
+  //     const originalOpacity = textObject.opacity;
+  //     const originalLeft = textObject.left + 100;
+  //     const originalTop = textObject.top;
+  
+  //     lines.forEach((line, lineIndex) => {
+  //       // Measure the width of the current line
+  //       const lineWidth = textObject.__lineWidths[lineIndex];
+  //       const charWidth = (lineWidth + (line.length - 1) * charSpacing) / line.length;
+  //       const initialLeft = originalLeft - lineWidth / 2;
+  //       const yOffset = originalTop + lineIndex * lineHeight;
+  
+  //       line.forEach((char, index) => {
+  //         const charObject = new fabric.Text(char, {
+  //           left: initialLeft + (charWidth + charSpacing) * index, // Distribute characters with spacing
+  //           top: yOffset,
+  //           fontSize: textObject.fontSize,
+  //           fill: textObject.fill,
+  //           fontFamily: 'Arial',
+  //           opacity: 0, // Start with opacity 0
+  //           // shadow: `0 0 ${maxBlur}px rgba(0, 0, 0, 0.5)`,
+  //           selectable: false,
+  //           stroke: null, // Set stroke to null to remove it
+  //           fontWeight: textObject?.fontWeight
+  //         });
+  //         charObjects.push(charObject);
+  //         canvas.add(charObject);
+  //       });
+  //     });
+  
+  //     let step = 0;
+  //     const fadeInOrder = Array.from({ length: charObjects.length }, (_, i) => i).sort(() => Math.random() - 0.5);
+  
+  //     const animate = () => {
+  //       fadeInOrder.forEach((charIndex, orderIndex) => {
+  //         if (step >= orderIndex) {
+  //           const charObject = charObjects[charIndex];
+  //           const progress = Math.min(1, (step - orderIndex) * fadeRate);
+  //           const blurLevel = maxBlur * (1 - progress);
+  
+  //           charObject.set({
+  //             opacity: progress,
+  //             shadow: `0 0 ${blurLevel}px rgba(0, 0, 0, 0.5)`,
+  //           });
+  //         }
+  //       });
+  
+  //       canvas.renderAll();
+  
+  //       if (step < charObjects.length + 1 / fadeRate) {
+  //         step++;
+  //         setTimeout(animate, animationTypeSpeed);
+  //       } else {
+  //         textObject.set({ opacity: originalOpacity }); // Restore original opacity
+  //         canvas.remove(...charObjects); // Clear the characters from the canvas
+  //         canvas.renderAll();
+  //         // Update animation style
+  //         setAnimationStyle({ clarifyAnimation: false });
+  //       }
+  //     };
+  
+  //     // Hide the original text object after animation starts
+  //     setTimeout(() => {
+  //       textObject.set({ opacity: 0 });
+  //       canvas.renderAll();
+  //       animate();
+  //     }, animationTypeSpeed);
+  //   }
+  // };
+
+  // const clarifyAnimation = () => {
+  //   if (selectedObject && canvas) {
+  //     canvas.discardActiveObject(); // Clear selection
+  //     const textObject = selectedObject;
+  //     const text = textObject.text;
+  //     const fadeRate = 0.02;
+  //     const maxBlur = 8;
+  //     const animationTypeSpeed = 60;
+  //     const charSpacing = 0; // Adjust the spacing between characters
+  
+  //     // Get the wrapped lines of text
+  //     const lines = textObject._textLines;
+  
+  //     // Create an array to hold individual character objects
+  //     const charObjects = [];
+  //     const lineHeight = textObject.fontSize * 1.2; // Assuming line height is 1.2 times the font size
+  
+  //     // Store original properties
+  //     const originalOpacity = textObject.opacity;
+  //     const originalLeft = textObject.left + 100;
+  //     const originalTop = textObject.top;
+  
+  //     lines.forEach((line, lineIndex) => {
+  //       // Measure the width of the current line
+  //       const lineWidth = textObject.__lineWidths[lineIndex];
+  //       const charWidth = (lineWidth + (line.length - 1) * charSpacing) / line.length;
+  //       const initialLeft = originalLeft - lineWidth / 2;
+  //       const yOffset = originalTop + lineIndex * lineHeight;
+      
+  //       // Split the line into individual characters
+  //       [...line].forEach((char, index) => {
+  //         const charObject = new fabric.Text(char, {
+  //           left: initialLeft + (charWidth + charSpacing) * index, // Distribute characters with spacing
+  //           top: yOffset,
+  //           fontSize: textObject.fontSize,
+  //           fill: textObject.fill,
+  //           fontFamily: 'Arial',
+  //           opacity: 0, // Start with opacity 0
+  //           // shadow: `0 0 ${maxBlur}px rgba(0, 0, 0, 0.5)`,
+  //           selectable: false,
+  //           stroke: null, // Set stroke to null to remove it
+  //           fontWeight: textObject?.fontWeight
+  //         });
+  //         charObjects.push(charObject);
+  //         canvas.add(charObject);
+  //       });
+  //     });
+      
+  
+  //     let step = 0;
+  //     const fadeInOrder = Array.from({ length: charObjects.length }, (_, i) => i).sort(() => Math.random() - 0.5);
+  
+  //     const animate = () => {
+  //       fadeInOrder.forEach((charIndex, orderIndex) => {
+  //         if (step >= orderIndex) {
+  //           const charObject = charObjects[charIndex];
+  //           const progress = Math.min(1, (step - orderIndex) * fadeRate);
+  //           const blurLevel = maxBlur * (1 - progress);
+  
+  //           charObject.set({
+  //             opacity: progress,
+  //             // shadow: `0 0 ${blurLevel}px rgba(0, 0, 0, 0.5)`,
+  //           });
+  //         }
+  //       });
+  
+  //       canvas.renderAll();
+  
+  //       if (step < charObjects.length + 1 / fadeRate) {
+  //         step++;
+  //         setTimeout(animate, animationTypeSpeed);
+  //       } else {
+  //         textObject.set({ opacity: originalOpacity }); // Restore original opacity
+  //         canvas.remove(...charObjects); // Clear the characters from the canvas
+  //         canvas.renderAll();
+  //         // Update animation style
+  //         setAnimationStyle({ clarifyAnimation: false });
+  //       }
+  //     };
+  
+  //     // Hide the original text object after animation starts
+  //     setTimeout(() => {
+  //       textObject.set({ opacity: 0 });
+  //       canvas.renderAll();
+  //       animate();
+  //     }, animationTypeSpeed);
+  //   }
+  // };
   const clarifyAnimation = () => {
     if (selectedObject && canvas) {
       canvas.discardActiveObject(); // Clear selection
@@ -98,72 +521,84 @@ const DesignCanvas = ({ width = 600, height = 400, animationStyle, setAnimationS
       const fadeRate = 0.02;
       const maxBlur = 8;
       const animationTypeSpeed = 60;
-      const fadeDistance = 20; // Adjust the distance each character moves during fade-in
-      const charSpacing = 2; // Adjust the spacing between characters
-
-      // Calculate the total width of the text
-      const totalWidth = textObject.width || textObject.measureTextWidth();
-
-      // Calculate the effective width of a character (including spacing)
-      const charWidth = (totalWidth + (text.length - 1) * charSpacing) / text.length;
-
-      // Calculate initial left position for the text
-      // const initialLeft = textObject.left - totalWidth / 2;
-      const initialLeft = 27;
-
+      const charSpacing = 0; // Adjust the spacing between characters
+    
+      // Get the wrapped lines of text
+      const lines = textObject._textLines;
+    
       // Create an array to hold individual character objects
       const charObjects = [];
-
-      // Create individual fabric.Text objects for each character
-      text.split('').forEach((char, index) => {
-        const charObject = new fabric.Text(char, {
-          left: initialLeft + (charWidth + charSpacing) * index, // Distribute characters with spacing
-          top: textObject.top,
-          fontSize: textObject.fontSize,
-          fill: textObject.fill,
-          opacity: 0, // Start with opacity 0
-          shadow: `0 0 ${maxBlur}px rgba(0, 0, 0, 0.5)`,
-          selectable: false,
-          stroke: null, // Set stroke to null to remove it
-          fontWeight: 'normal'
-        });
-        charObjects.push(charObject);
-        canvas.add(charObject);
+      const lineHeight = textObject.fontSize * 1.2; // Assuming line height is 1.2 times the font size
+    
+      // Store original properties
+      const originalOpacity = textObject.opacity;
+      const originalLeft = textObject.left + 100;
+      const originalTop = textObject.top;
+    
+      lines.forEach((line, lineIndex) => {
+        // Measure the width of the current line
+        const lineWidth = textObject.__lineWidths[lineIndex];
+        const charWidth = (lineWidth + (line.length - 1) * charSpacing) / line.length;
+        const initialLeft = originalLeft - lineWidth / 2;
+        const yOffset = originalTop + lineIndex * lineHeight;
+    
+        // Split the line into individual characters, including spaces
+        let charIndex = 0;
+        for (let i = 0; i < line.length; i++) {
+          const char = line[i];
+          if (char !== ' ') {
+            const charObject = new fabric.Text(char, {
+              left: initialLeft + (charWidth + charSpacing) * charIndex, // Distribute characters with spacing
+              top: yOffset,
+              fontSize: textObject.fontSize,
+              fill: textObject.fill,
+              fontFamily: 'Arial',
+              opacity: 0, // Start with opacity 0
+              // shadow: `0 0 ${maxBlur}px rgba(0, 0, 0, 0.5)`,
+              selectable: false,
+              stroke: null, // Set stroke to null to remove it
+              fontWeight: textObject?.fontWeight
+            });
+            charObjects.push(charObject);
+            canvas.add(charObject);
+            charIndex++;
+          } else {
+            charIndex++; // Increment index for the space character
+          }
+        }
       });
-
-      const randomOrder = Array.from({ length: text.length }, (_, i) => i).sort(() => Math.random() - 0.5);
+    
       let step = 0;
-
+      const fadeInOrder = Array.from({ length: charObjects.length }, (_, i) => i).sort(() => Math.random() - 0.5);
+    
       const animate = () => {
-        randomOrder.forEach((charIndex, index) => {
-          if (step >= index) {
+        fadeInOrder.forEach((charIndex, orderIndex) => {
+          if (step >= orderIndex) {
             const charObject = charObjects[charIndex];
-            const progress = Math.min(1, (step - index) * fadeRate);
+            const progress = Math.min(1, (step - orderIndex) * fadeRate);
             const blurLevel = maxBlur * (1 - progress);
-            const initialX = initialLeft + (charWidth + charSpacing) * charIndex;
-            const targetX = initialX + fadeDistance; // Adjust the position based on fade progress
-
+    
             charObject.set({
               opacity: progress,
-              shadow: `0 0 ${blurLevel}px rgba(0, 0, 0, 0.5)`,
-              left: initialX + (targetX - initialX) * progress,
+              // shadow: `0 0 ${blurLevel}px rgba(0, 0, 0, 0.5)`,
             });
           }
         });
-
+    
         canvas.renderAll();
-        if (step < text.length + 1 / fadeRate) {
+    
+        if (step < charObjects.length + 1 / fadeRate) {
           step++;
           setTimeout(animate, animationTypeSpeed);
         } else {
-          textObject.set({ opacity: 1 }); // Restore original opacity
+          textObject.set({ opacity: originalOpacity }); // Restore original opacity
           canvas.remove(...charObjects); // Clear the characters from the canvas
           canvas.renderAll();
           // Update animation style
           setAnimationStyle({ clarifyAnimation: false });
         }
       };
-
+    
       // Hide the original text object after animation starts
       setTimeout(() => {
         textObject.set({ opacity: 0 });
@@ -172,60 +607,15 @@ const DesignCanvas = ({ width = 600, height = 400, animationStyle, setAnimationS
       }, animationTypeSpeed);
     }
   };
-
-
-
-
-
-
-  const animateText = (canvas, textElement) => {
-    console.log("Animating Text:", textElement.text);
-    const text = textElement.text;
-    const fadeRate = 0.02;
-    const maxBlur = 5;
-    const moveDistance = 20;
-    const animationTypeSpeed = 50;
-    const startY = textElement.top;
-    const charPositions = [];
-
-    for (let i = 0; i < text.length; i++) {
-      charPositions.push({ x: 0, opacity: 0 });
-    }
-
-    const fadeInAni = Array.from({ length: text.length }, (_, i) => i).sort(() => Math.random() - 0.5);
-    let step = 0;
-
-    const animate = () => {
-      for (let i = 0; i < text.length; i++) {
-        const charIndex = fadeInAni[i];
-        const baseXPos = charPositions[charIndex].x;
-        const xPosChar = baseXPos + moveDistance * (1 - charPositions[charIndex].opacity);
-
-        if (step >= i) {
-          charPositions[charIndex].opacity = Math.min(1, charPositions[charIndex].opacity + fadeRate);
-          const blurLevel = maxBlur * (1 - charPositions[charIndex].opacity);
-
-          // Update text object properties
-          textElement.set({
-            left: xPosChar,
-            opacity: charPositions[charIndex].opacity,
-            shadow: `0 0 ${blurLevel}px rgba(0, 0, 0, 0.5)`,
-          });
-          textElement.setCoords();
-        }
-      }
-
-      canvas.requestRenderAll();
-
-      if (step < text.length || charPositions.some(char => char.opacity < 1)) {
-        step++;
-        setTimeout(animate, animationTypeSpeed);
-      }
-    };
-
-    animate();
-  };
-
+  
+  
+  
+  
+ 
+  
+  
+  
+  
   return (
     <Fragment>
       {showGridProp && (

@@ -3,11 +3,11 @@
   align-items: flex-start;
 }
 .animationFilter {
-  width: 40%;
+  width: 35%;
 }
 
 .showCanvas {
-  width: 60%;
+  width: 65%;
 }
 .textBox {
   background-color: white;
@@ -99,7 +99,7 @@
   background: rgb(255, 255, 255);
   min-height: 800px;
   height: 100%;
-  max-width: 50%;
+  /* max-width: 50%; */
   margin: 0px 127px;
   margin-top: 40px;
 }
