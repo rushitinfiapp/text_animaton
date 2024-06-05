@@ -185,7 +185,7 @@ export default function HomePage() {
       {/* <PageCom animationText={animationText} /> */}
       <div className="showCanvas">
         <div className="showPage">
-          <DesignCanvas showGrid={true}  animationStyle={animationStyle}>{createElements()}</DesignCanvas>
+          <DesignCanvas showGrid={true}  setAnimationStyle={setAnimationStyle}animationStyle={animationStyle}>{createElements()}</DesignCanvas>
         </div>
       </div>
     </div>
