@@ -8,6 +8,11 @@
 
 .showCanvas {
   width: 65%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ebecf0;
 }
 .textBox {
   background-color: white;
@@ -94,15 +99,25 @@
   margin-top: 10px !important;
 }
 
-.showPage {
+/* .showPage {
   box-shadow: 0 4px 32px -14px rgba(64, 87, 109, 0.3);
   background: rgb(255, 255, 255);
   min-height: 800px;
   height: 100%;
+  margin: 0px 127px;
+  margin-top: 40px;
+} */
+ .showPage{
+  box-shadow: 0 4px 32px -14px rgba(64, 87, 109, 0.3);
+  background: rgb(255, 255, 255);
+  /* min-height: 800px; */
+  height: 100%;
   /* max-width: 50%; */
   margin: 0px 127px;
   margin-top: 40px;
-}
+  width: 600px;
+  height: 500px;
+ }
 .showPage canvas {
   margin-top: 40px;
 }
