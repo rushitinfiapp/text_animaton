@@ -9,6 +9,8 @@ const Text = ({ canvas, model }) => {
       fontSize,
       fontFamily,
       textAlign,
+      charSpacing: 1000,
+      lineHeight:2,
       left: x,
       top: y,
     });
