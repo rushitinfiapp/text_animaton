@@ -8,6 +8,7 @@ const DesignCanvas = ({ width = 600, height = 500, animationStyle, setAnimationS
   const canvasRef = useRef(null);
   const [selectedObject, setSelectedObject] = useState(null);
 
+  console.log(selectedObject)
   const renderGrid = () => {
     const gridCanvas = new fabric.Canvas(gridRef.current);
     const options = {
@@ -89,25 +90,199 @@ const DesignCanvas = ({ width = 600, height = 500, animationStyle, setAnimationS
     }
   }, [animationStyle, selectedObject])
 
+
+
+
+  // const clarifyAnimation = () => {
+  //   if (selectedObject && canvas) {
+  //     console.log("selectedObject", selectedObject);
+  //     canvas.discardActiveObject();
+  //     const textObject = selectedObject;
+  //     const fadeRate = 0.02;
+  //     const maxBlur = 8;
+  //     const animationTypeSpeed = 60;
+  //     const originalOpacity = textObject.opacity;
+  //     const originalLeft = textObject.left + 100;
+  //     const originalTop = textObject.top;
+  //     const lines = textObject._textLines;
+  //     const lineHeights = textObject.__lineHeights;
+  //     console.log("lines", lines);
+  //     console.log("lineHeights", lineHeights);
+  //     const charObjects = [];
+
+  //     lines.forEach((line, lineIndex) => {
+  //       const lineWidth = textObject.__lineWidths[lineIndex];
+  //       const initialLeft = originalLeft - lineWidth / 2;
+  //       const yOffset = originalTop + (lineIndex === 0 ? 0 : lineHeights[lineIndex - 1]);
+  //       console.log(`lineIndex: ${lineIndex}, initialLeft: ${initialLeft}, yOffset: ${yOffset}`);
+
+  //       let charLeft = initialLeft;
+  //       for (let i = 0; i < line.length; i++) {
+  //         const char = line[i];
+  //         const charObject = new fabric.Text(char, {
+  //           left: charLeft,
+  //           top: yOffset,
+  //           fontSize: textObject.fontSize,
+  //           fill: textObject.fill,
+  //           fontFamily: textObject.fontFamily,
+  //           opacity: 0,
+  //           shadow: `0 0 ${maxBlur}px rgba(0, 0, 0, 0.5)`,
+  //           selectable: false,
+  //           stroke: textObject.stroke,
+  //           fontWeight: textObject.fontWeight,
+  //         });
+  //         charObjects.push(charObject);
+  //         canvas.add(charObject);
+
+  //         if (i === 0 && lineIndex === 0) {
+  //           charLeft += charObject.width - 2.50;
+  //           console.log("charLeft +++", charLeft)
+  //         } else {
+  //           console.log("charLeft ---", charLeft)
+  //           charLeft += charObject.width;
+  //         }
+  //         console.log(`char: ${char}, charLeft: ${charLeft}`);
+  //       }
+  //     });
+
+  //     let step = 0;
+  //     const fadeInOrder = Array.from({ length: charObjects.length }, (_, i) => i).sort(() => Math.random() - 0.5);
+
+  //     const animate = () => {
+  //       fadeInOrder.forEach((charIndex, orderIndex) => {
+  //         if (step >= orderIndex) {
+  //           const charObject = charObjects[charIndex];
+  //           const progress = Math.min(1, (step - orderIndex) * fadeRate);
+  //           const blurLevel = maxBlur * (1 - progress);
+  //           charObject.set({
+  //             opacity: progress,
+  //             shadow: `0 0 ${blurLevel}px rgba(0, 0, 0, 0.5)`,
+  //           });
+  //         }
+  //       });
+  //       canvas.renderAll();
+  //       if (step < charObjects.length + 1 / fadeRate) {
+  //         step++;
+  //         setTimeout(animate, animationTypeSpeed);
+  //       } else {
+  //         textObject.set({ opacity: originalOpacity });
+  //         canvas.remove(...charObjects);
+  //         canvas.renderAll();
+  //         setAnimationStyle({ clarifyAnimation: false });
+  //       }
+  //     };
+
+  //     setTimeout(() => {
+  //       textObject.set({ opacity: 0 });
+  //       canvas.renderAll();
+  //       animate();
+  //     }, animationTypeSpeed);
+  //   }
+  // };
+
+  // const clarifyAnimation = () => {
+  //   if (selectedObject && canvas) {
+  //     console.log("selectedObject",selectedObject)
+  //     canvas.discardActiveObject(); 
+  //     const textObject = selectedObject;
+  //     // const text = textObject.text;
+  //     const fadeRate = 0.02;
+  //     const maxBlur = 8;
+  //     const animationTypeSpeed = 60;
+  //     const originalOpacity = textObject.opacity;
+  //     const originalLeft = textObject.left + 100; 
+  //     const originalTop = textObject.top; 
+  //     const lines = textObject._textLines;
+  //     const charObjects = [];
+  //     const lineHeight = textObject.fontSize * 1.5; 
+
+  //     lines.forEach((line, lineIndex) => {
+  //       const lineWidth = textObject.__lineWidths[lineIndex];
+  //       const initialLeft = originalLeft - lineWidth / 2;
+  //       const yOffset = originalTop + lineIndex * lineHeight; 
+
+  //       let charLeft = initialLeft;
+  //       for (let i = 0; i < line.length; i++) {
+  //         const char = line[i];
+  //         const charObject = new fabric.Text(char, {
+  //           left: charLeft,
+  //           top: yOffset,
+  //           fontSize: textObject.fontSize,
+  //           fill: textObject.fill,
+  //           fontFamily: textObject.fontFamily,
+  //           opacity: 0, 
+  //           shadow: `0 0 ${maxBlur}px rgba(0, 0, 0, 0.5)`,
+  //           selectable: false,
+  //           stroke: textObject.stroke,
+  //           fontWeight: textObject.fontWeight,
+  //         });
+  //         charObjects.push(charObject);
+  //         canvas.add(charObject);
+  //         if (i === 0 && lineIndex === 0) {
+  //           charLeft += charObject.width - 2.50;
+  //           console.log("charLeft +++", charLeft)
+  //         } else {
+  //           console.log("charLeft ---", charLeft)
+  //           charLeft += charObject.width;
+  //         }
+  //       }
+  //     });
+
+  //     let step = 0;
+  //     const fadeInOrder = Array.from({ length: charObjects.length }, (_, i) => i).sort(() => Math.random() - 0.5);
+
+  //     const animate = () => {
+  //       fadeInOrder.forEach((charIndex, orderIndex) => {
+  //         if (step >= orderIndex) {
+  //           const charObject = charObjects[charIndex];
+  //           const progress = Math.min(1, (step - orderIndex) * fadeRate);
+  //           const blurLevel = maxBlur * (1 - progress);
+
+  //           charObject.set({
+  //             opacity: progress,
+  //             shadow: `0 0 ${blurLevel}px rgba(0, 0, 0, 0.5)`,
+  //           });
+  //         }
+  //       });
+
+  //       canvas.renderAll();
+
+  //       if (step < charObjects.length + 1 / fadeRate) {
+  //         step++;
+  //         setTimeout(animate, animationTypeSpeed);
+  //       } else {
+  //         textObject.set({ opacity: originalOpacity }); 
+  //         canvas.remove(...charObjects);
+  //         canvas.renderAll();
+  //         setAnimationStyle({ clarifyAnimation: false });
+  //       }
+  //     };
+  //     setTimeout(() => {
+  //       textObject.set({ opacity: 0 });
+  //       canvas.renderAll();
+  //       animate();
+  //     }, animationTypeSpeed);
+  //   }
+  // };
   const clarifyAnimation = () => {
     if (selectedObject && canvas) {
-      canvas.discardActiveObject(); 
+      canvas.discardActiveObject();
       const textObject = selectedObject;
-      // const text = textObject.text;
       const fadeRate = 0.02;
       const maxBlur = 8;
       const animationTypeSpeed = 60;
       const originalOpacity = textObject.opacity;
-      const originalLeft = textObject.left + 100; 
-      const originalTop = textObject.top; 
+      const originalLeft = textObject.left + 100;
+      const originalTop = textObject.top;
       const lines = textObject._textLines;
+      const lineHeights = textObject.__lineHeights;
+      const lineWidths = textObject.__lineWidths;
+
       const charObjects = [];
-      const lineHeight = textObject.fontSize * 1.5; 
 
       lines.forEach((line, lineIndex) => {
-        const lineWidth = textObject.__lineWidths[lineIndex];
-        const initialLeft = originalLeft - lineWidth / 2;
-        const yOffset = originalTop + lineIndex * lineHeight; 
+        const initialLeft = originalLeft - lineWidths[lineIndex] / 2;
+        const yOffset = originalTop + lineIndex * lineHeights[lineIndex];
 
         let charLeft = initialLeft;
         for (let i = 0; i < line.length; i++) {
@@ -118,15 +293,23 @@ const DesignCanvas = ({ width = 600, height = 500, animationStyle, setAnimationS
             fontSize: textObject.fontSize,
             fill: textObject.fill,
             fontFamily: textObject.fontFamily,
-            opacity: 0, 
+            opacity: 0,
             shadow: `0 0 ${maxBlur}px rgba(0, 0, 0, 0.5)`,
             selectable: false,
             stroke: textObject.stroke,
             fontWeight: textObject.fontWeight,
           });
+
           charObjects.push(charObject);
           canvas.add(charObject);
-          charLeft += charObject.width; 
+
+          if (i === 0 && lineIndex === 0) {
+            charLeft += charObject.width - 2.50;
+            console.log("charLeft +++", charLeft)
+          } else {
+            console.log("charLeft ---", charLeft)
+            charLeft += charObject.width;
+          }
         }
       });
 
@@ -153,12 +336,13 @@ const DesignCanvas = ({ width = 600, height = 500, animationStyle, setAnimationS
           step++;
           setTimeout(animate, animationTypeSpeed);
         } else {
-          textObject.set({ opacity: originalOpacity }); 
+          textObject.set({ opacity: originalOpacity });
           canvas.remove(...charObjects);
           canvas.renderAll();
           setAnimationStyle({ clarifyAnimation: false });
         }
       };
+
       setTimeout(() => {
         textObject.set({ opacity: 0 });
         canvas.renderAll();
@@ -166,14 +350,16 @@ const DesignCanvas = ({ width = 600, height = 500, animationStyle, setAnimationS
       }, animationTypeSpeed);
     }
   };
+
+
   return (
     <Fragment>
       {showGridProp && (
-        <div style={{ position: 'absolute',overflow:"hidden" }}>
+        <div style={{ position: 'absolute', overflow: "hidden" }}>
           <canvas ref={gridRef} width={width} height={height} />
         </div>
       )}
-      <div style={{ position: 'absolute',overflow:"hidden" }}>
+      <div style={{ position: 'absolute', overflow: "hidden" }}>
         <canvas ref={canvasRef} width={width} height={height} />
       </div>
       {canvas && renderedChildren}

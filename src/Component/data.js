@@ -11,6 +11,7 @@ export default {
         text: 'Your paragraph text',
         fontFamily: 'Arial',
         fontSize: 26,
+        spacing: 10,
         width: 200,
         height: 200,
         x: 27,
