@@ -8,7 +8,10 @@ const DesignCanvas = ({ width = 600, height = 500, animationStyle, setAnimationS
   const canvasRef = useRef(null);
   const [selectedObject, setSelectedObject] = useState(null);
 
-  console.log(selectedObject)
+  useEffect(() => {
+    console.log("selectedObject", selectedObject)
+  }, [selectedObject])
+
   const renderGrid = () => {
     const gridCanvas = new fabric.Canvas(gridRef.current);
     const options = {
@@ -52,6 +55,7 @@ const DesignCanvas = ({ width = 600, height = 500, animationStyle, setAnimationS
       if (e.selected && e.selected.length > 0) {
         const selected = e.selected[0];
         if (selected.type === 'textbox' || selected.type === 'text') {
+          console.log("selected", selected)
           setSelectedObject(selected);
         }
       }
@@ -87,11 +91,10 @@ const DesignCanvas = ({ width = 600, height = 500, animationStyle, setAnimationS
   useEffect(() => {
     if (selectedObject && animationStyle?.clarifyAnimation === true) {
       clarifyAnimation();
+    } else if (animationStyle?.fadeAnimation) {
+      // fadeAnimation()
     }
   }, [animationStyle, selectedObject])
-
-
-
 
   // const clarifyAnimation = () => {
   //   if (selectedObject && canvas) {
@@ -272,14 +275,13 @@ const DesignCanvas = ({ width = 600, height = 500, animationStyle, setAnimationS
       const maxBlur = 8;
       const animationTypeSpeed = 60;
       const originalOpacity = textObject.opacity;
-      const originalLeft = textObject.left + 100;
+      const originalLeft = textObject.left + textObject.width / 2;
       const originalTop = textObject.top;
       const lines = textObject._textLines;
       const lineHeights = textObject.__lineHeights;
       const lineWidths = textObject.__lineWidths;
 
       const charObjects = [];
-
       lines.forEach((line, lineIndex) => {
         const initialLeft = originalLeft - lineWidths[lineIndex] / 2;
         const yOffset = originalTop + lineIndex * lineHeights[lineIndex];
@@ -299,7 +301,6 @@ const DesignCanvas = ({ width = 600, height = 500, animationStyle, setAnimationS
             stroke: textObject.stroke,
             fontWeight: textObject.fontWeight,
           });
-
           charObjects.push(charObject);
           canvas.add(charObject);
 
@@ -352,6 +353,7 @@ const DesignCanvas = ({ width = 600, height = 500, animationStyle, setAnimationS
   };
 
 
+
   return (
     <Fragment>
       {showGridProp && (
@@ -363,7 +365,7 @@ const DesignCanvas = ({ width = 600, height = 500, animationStyle, setAnimationS
         <canvas ref={canvasRef} width={width} height={height} />
       </div>
       {canvas && renderedChildren}
-      {/* <button
+      <button
         style={{ position: 'absolute', top: 30, right: 0 }}
         onClick={e => {
           e.preventDefault();
@@ -371,7 +373,7 @@ const DesignCanvas = ({ width = 600, height = 500, animationStyle, setAnimationS
         }}
       >
         Save To JSON
-      </button> */}
+      </button>
     </Fragment>
   );
 };

@@ -3,7 +3,7 @@ import { fabric } from 'fabric';
 
 const Text = ({ canvas, model }) => {
   useEffect(() => {
-    const { width, fontFamily,textAlign, text, fontSize, x, y } = model;
+    const { width, fontFamily, textAlign, text, fontSize, x, y } = model;
     const textbox = new fabric.Textbox(text, {
       width,
       fontSize,
@@ -13,6 +13,7 @@ const Text = ({ canvas, model }) => {
       // lineHeight:2,
       left: x,
       top: y,
+      ...model,
     });
     canvas.add(textbox);
 
