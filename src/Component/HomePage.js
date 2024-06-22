@@ -26,6 +26,50 @@ export default function HomePage() {
     fadeAnimation: false
   });
 
+  useEffect(() => {
+    const canvasElement = canvasRef.current;
+    const canvas = new fabric.Canvas(canvasElement, {
+      width: 600,
+      height: 400,
+    });
+
+    let newText = 'Your paragraph text';
+    const newTextObject = new fabric.Textbox(newText, {
+      left: 50,
+      top: 50,
+      width: 500,
+      fontSize: 30,
+      lineHeight: 1.3,
+      fontFamily: 'Arial',
+      fill: 'blue',
+      opacity: 0, // Start with opacity 0 for animation
+    });
+
+    canvas.add(newTextObject);
+
+    if (showAnimation) {
+      newTextObject.animate('opacity', 1, {
+        duration: 1000, // Animation duration in milliseconds
+        onChange: canvas.renderAll.bind(canvas),
+        easing: fabric.util.ease.easeInOutCubic,
+        onComplete: () => {
+          // Animation complete logic
+          newTextObject.set({ opacity: 1 }); // Ensure opacity is set to 1 at the end
+          canvas.renderAll();
+          console.log("newTextObject", newTextObject)
+        },
+      });
+    } else {
+      newTextObject.set({ opacity: 1 }); // Show immediately if animation is disabled
+      canvas.renderAll();
+    }
+
+    return () => {
+      canvas.dispose(); // Dispose Fabric canvas properly
+    };
+  }, [showAnimation]);
+
+
   const handleAnimationStyleClick = (type) => {
     switch (type) {
       case "clarify":
