@@ -1929,103 +1929,157 @@ const TextAnimationCanvas = () => {
   //     }
   //   };
   // }, [showAnimation]);
-  useEffect(() => {
-    const canvasElement = canvasRef.current;
-    const canvas = new fabric.Canvas(canvasElement, {
-      width: 600,
-      height: 400,
-    });
   
-    const newText = 'Your paragraph text';
-    const newTextObject = new fabric.Textbox(newText, {
-      left: 50,
-      top: 50,
-      width: 500,
-      fontSize: 30,
-      lineHeight: 1.3,
-      fontFamily: 'Arial',
-      fill: 'blue',
-      opacity: 0, // Start with opacity 0 for animation effect
-    });
+    // useEffect(() => {
+    //   const canvas = new fabric.Canvas(canvasRef.current, {
+    //     width: 600,
+    //     height: 400,
+    //   });
   
-    // Add the text object to the canvas
-    canvas.add(newTextObject);
+    //   let newText = 'Your paragraph text';
   
-    // Ensure canvas is rendered after adding objects
-    canvas.renderAll();
+    //   const newTextObject = new fabric.Textbox(newText, {
+    //     left: 50,
+    //     top: 50,
+    //     width: 500,
+    //     fontSize: 30,
+    //     lineHeight: 1.3,
+    //     fontFamily: 'Arial',
+    //     fill: 'blue',
+    //     opacity: 1,
+    //   });
   
-    const animateText = () => {
-      const duration = 1000; // Animation duration in milliseconds
-      const charCount = newText.length;
-      const fadeRate = duration / charCount;
-      const maxBlur = 8;
+    //   canvas.add(newTextObject);
   
-      let step = 0;
-      const animateFrame = () => {
-        const textObjects = newTextObject._objects;
-        if (!textObjects) {
-          console.warn('textObjects is not available yet. Waiting...');
-          setTimeout(animateFrame, 100); // Retry after a short delay
-          return;
-        }
+    //   if (showAnimation) {
+    //     // Override default _renderChar method for animation
+    //     newTextObject._renderChar = function (method, ctx, lineIndex, charIndex, _char, left, top) {
+    //       const fadeRate = 0.02;
+    //       const maxBlur = 8;
   
-        console.log("textObjects", textObjects); // Log to track the state of textObjects
+    //       const lines = this?._textLines;
+    //       const lineHeights = this?.__lineHeights;
   
-        if (step < charCount) {
-          const char = newText.charAt(step);
-          const charIndex = newTextObject.text.indexOf(char);
+    //       if (!lines || !lineHeights) {
+    //         console.error('Text lines or dimensions are not available.');
+    //         return;
+    //       }
   
-          if (charIndex !== -1) {
-            const object = textObjects.find(obj => obj.type === 'text' && obj.lineIndex === 0 && obj.charIndex === charIndex);
+    //       const objectCenter = this.getCenterPoint();
+    //       const initialLeft = objectCenter.x - this.width / 2;
+    //       let yOffset = objectCenter.y - this.height / 2;
   
-            if (object) {
-              const progress = (step + 1) / charCount;
-              const blurLevel = maxBlur * (1 - progress);
-              const opacity = progress;
+    //       lines.forEach((line, lineIndex) => {
+    //         let charLeft = initialLeft;
+    //         if (lineIndex > 0) {
+    //           yOffset += lineHeights[lineIndex - 1] * this.lineHeight;
+    //         }
+    //         for (let i = 0; i < line.length; i++) {
+    //           const char = line[i];
   
-              object.set('opacity', opacity);
-              object.setShadow(`0 0 ${blurLevel}px rgba(0, 0, 0, 0.5)`);
+    //           // Access individual character properties using charIndex
+    //           const charObject = this; // Use the original text object itself
+    //           const opacity = Math.min(1, (step - charIndex * fadeRate) * fadeRate);
+    //           const blurLevel = maxBlur * (1 - opacity);
+    //           const charLeftOffset = charIndex * this.fontSize; // Assuming fixed character width
   
-              canvas.renderAll(); // Render canvas after modifying objects
+    //           charObject.set({
+    //             // Modify properties of original text object for each character
+    //             opacity: opacity,
+    //             shadow: `0 0 ${blurLevel}px rgba(0, 0, 0, 0.5)`,
+    //             left: initialLeft + charLeftOffset, // Adjust position for each char
+    //             top: yOffset,
+    //           });
   
-              step++;
-              setTimeout(animateFrame, fadeRate);
-            }
-          }
-        } else {
-          newTextObject.set('opacity', 1); // Ensure final opacity
-          newTextObject._objects.forEach(obj => {
-            if (obj.type === 'text') {
-              obj.setShadow(null); // Clear shadow if needed
-            }
-          });
+    //           canvas.renderAll(); // Update canvas after each character modification
+    //         }
+    //       });
   
-          canvas.renderAll(); // Final render after animation
+    //       // Animation loop logic
+    //       const animateFrame = () => {
+    //         // Declare and initialize step before the forEach loop
+    //         let step = 0; 
+  
+    //         fadeInOrder.forEach((charIndex, orderIndex) => {
+    //           if (step >= orderIndex) {
+    //             // ... (existing code using step, charObject, opacity, blurLevel, etc.)
+    //           }
+    //         });
+  
+    //         canvas.renderAll();
+  
+    //         if (step < newTextObject.text.length + 1 / fadeRate) {
+    //           step++;
+    //           requestAnimationFrame(animateFrame);
+    //         } else {
+    //           newTextObject.set({ opacity: 1 });
+    //           canvas.renderAll();
+    //         }
+    //       };
+  
+    //       // Declare fadeInOrder inside _renderChar
+    //       const fadeInOrder = Array.from({ length: newTextObject.text.length }, (_, i) => i).sort(() => Math.random() - 0.5);
+  
+    //       requestAnimationFrame(() => {
+    //         animateFrame();
+    //       });
+    //     };
+  
+    //     newTextObject._renderChar(); // Trigger animation
+    //   } else if (showAnimation === false) {
+    //     newTextObject.set({ opacity: 1 });
+    //     canvas.clear();
+    //     canvas.renderAll();
+    //   }
+  
+    //   return () => {
+    //     if (canvas) {
+    //       canvas.clear();
+    //       canvas.dispose();
+    //     }
+    //   };
+    // }, [showAnimation]);
+  
+    useEffect(() => {
+      const initializeCanvas = () => {
+        const canvas = new fabric.Canvas(canvasRef.current);
+        const text = new fabric.Text('Your paragraph text', {
+          left: 100,
+          top: 100,
+          fontSize: 40,
+        });
+        canvas.add(text);
+        if (showAnimation) {
+          animateText(text);
         }
       };
   
-      animateFrame(); // Start animation loop
+      if (canvasRef.current) {
+        initializeCanvas();
+      } else {
+        // Handle the case where canvasRef.current is not yet defined (optional)
+        console.log("Canvas element not yet available");
+      }
+    }, [canvasRef.current, showAnimation]);
+  
+    const animateText = (textObject) => {
+      textObject.animate('left', '+=100', {
+        duration: 1000,
+        easing: 'easeInOutSine',
+        repeat: Infinity,
+        direction: 'alternate',
+        onChange: canvasRef.current.renderAll.bind(canvasRef.current),
+      });
+  
+      textObject.animate('opacity', 0.2, {
+        duration: 500,
+        easing: 'easeInOutSine',
+        repeat: Infinity,
+        direction: 'alternate',
+        onChange: canvasRef.current.renderAll.bind(canvasRef.current),
+      });
     };
   
-    // Trigger animation if showAnimation flag is true
-    if (showAnimation) {
-      animateText();
-    } else {
-      newTextObject.set('opacity', 1); // Ensure text is visible if animation is not triggered
-      canvas.renderAll(); // Render canvas if animation is not needed
-    }
-  
-    return () => {
-      canvas.dispose(); // Clean up Fabric.js canvas instance
-    };
-  }, [showAnimation]);
-  
-
-
-
-
-
-
 
   const toggleAnimation = () => {
     setShowAnimation((prev) => !prev);
