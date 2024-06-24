@@ -1,124 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { fabric } from 'fabric';
+import { fabric, getStringWidth } from 'fabric';
 
 const TextAnimationCanvas = () => {
   const canvasRef = useRef(null);
   const [showAnimation, setShowAnimation] = useState(null);
-
-  // useEffect(() => {
-  //   const canvasElement = canvasRef.current;
-  //   const canvas = new fabric.Canvas(canvasElement, {
-  //     width: 600,
-  //     height: 400,
-  //   });
-
-  //   let newText = 'Your paragraph text';
-  //   const newTextObject = new fabric.Textbox(newText, {
-  //     left: 50,
-  //     top: 50,
-  //     width: 500,
-  //     fontSize: 30,
-  //     lineHeight: 1.3,
-  //     fontFamily: 'Arial',
-  //     fill: 'blue',
-  //     opacity: 1,
-  //   });
-
-  //   canvas.add(newTextObject);
-
-  //   if (showAnimation) {
-  //     newTextObject._renderChar = function (method, ctx, lineIndex, charIndex, _char, left, top) {
-  //       const fadeRate = 0.02;
-  //       const maxBlur = 8;
-  //       const charObjects = [];
-  //       const lines = this?._textLines;
-  //       const lineHeights = this?.__lineHeights;
-  //       const lineWidths = this?.__lineWidths;
-
-  //       if (!lines || !lineHeights || !lineWidths) {
-  //         console.error('Text lines or dimensions are not available.');
-  //         return;
-  //       }
-
-  //       const objectCenter = this.getCenterPoint();
-  //       const initialLeft = objectCenter.x - this.width / 2;
-  //       let yOffset = objectCenter.y - this.height / 2;
-
-  //       lines.forEach((line, lineIndex) => {
-  //         let charLeft = initialLeft;
-  //         if (lineIndex > 0) {
-  //           yOffset += lineHeights[lineIndex - 1] * this.lineHeight;
-  //         }
-  //         for (let i = 0; i < line.length; i++) {
-  //           const char = line[i];
-  //           const charObject = new fabric.Text(char, {
-  //             left: charLeft,
-  //             top: yOffset,
-  //             fontSize: this.fontSize,
-  //             fill: this.fill,
-  //             fontFamily: this.fontFamily,
-  //             opacity: 0,
-  //             shadow: `0 0 ${maxBlur}px rgba(0, 0, 0, 0.5)`,
-  //             selectable: false,
-  //             stroke: this.stroke,
-  //             fontWeight: this.fontWeight,
-  //           });
-  //           console.log("")
-  //           charObjects.push(charObject);
-  //           canvas.add(charObject);
-
-  //           charLeft += charObject.width;
-  //         }
-  //       });
-
-  //       let step = 0;
-  //       const fadeInOrder = Array.from({ length: charObjects.length }, (_, i) => i).sort(() => Math.random() - 0.5);
-
-  //       const animateFrame = () => {
-  //         fadeInOrder.forEach((charIndex, orderIndex) => {
-  //           if (step >= orderIndex) {
-  //             const charObject = charObjects[charIndex];
-  //             const progress = Math.min(1, (step - orderIndex) * fadeRate);
-  //             const blurLevel = maxBlur * (1 - progress);
-
-  //             charObject.set({
-  //               opacity: progress,
-  //               shadow: `0 0 ${blurLevel}px rgba(0, 0, 0, 0.5)`,
-  //             });
-  //           }
-  //         });
-
-  //         canvas.renderAll();
-
-  //         if (step < charObjects.length + 1 / fadeRate) {
-  //           step++;
-  //           requestAnimationFrame(animateFrame);
-  //         } else {
-  //           this.set({ opacity: 1 });
-  //           canvas.remove(...charObjects);
-  //           canvas.renderAll();
-  //         }
-  //       };
-
-  //       requestAnimationFrame(() => {
-  //         animateFrame();
-  //       });
-  //     };
-
-  //     newTextObject._renderChar();
-  //   } else if (showAnimation === false) {
-  //     newTextObject.set({ opacity: 1 });
-  //     canvas.clear();
-  //     canvas.renderAll();
-  //   }
-
-  //   return () => {
-  //     if (canvas) {
-  //       canvas.clear();
-  //       canvas.dispose();
-  //     }
-  //   };
-  // }, [showAnimation]);
 
 
   // useEffect(() => {
@@ -234,7 +119,6 @@ const TextAnimationCanvas = () => {
   //     }
   //   };
   // }, [showAnimation]);
-
 
   // useEffect(() => {
   //   const canvasElement = canvasRef.current;
@@ -1929,13 +1813,571 @@ const TextAnimationCanvas = () => {
   //     }
   //   };
   // }, [showAnimation]);
+
+  // useEffect(() => {
+  //   const canvasElement = canvasRef.current;
+  //   const canvas = new fabric.Canvas(canvasElement, {
+  //     width: 600,
+  //     height: 400,
+  //   });
+
+  //   const newText = 'Your paragraph text';
+  //   const newTextObject = new fabric.Textbox(newText, {
+  //     left: 50,
+  //     top: 50,
+  //     width: 500,
+  //     fontSize: 30,
+  //     lineHeight: 1.3,
+  //     fontFamily: 'Arial',
+  //     fill: 'blue',
+  //     opacity: 0, // Start with opacity set to 0 for animation
+  //     selectable: false,
+  //     stroke: null,
+  //     fontWeight: 'normal',
+  //     shadow: '0 0 8px rgba(0, 0, 0, 0.5)', // Initial shadow settings
+  //   });
+
+  //   canvas.add(newTextObject);
+
+  //   const animateText = () => {
+  //     const textLength = newText.length;
+  //     const fadeRate = 0.02;
+  //     const maxBlur = 8;
+
+  //     let step = 0;
+  //     let charIndex = 0;
+
+  //     const animateFrame = () => {
+  //       if (charIndex < textLength) {
+  //         const currentChar = newText.charAt(charIndex);
+  //         newTextObject.text = newTextObject.text.substring(0, charIndex) + currentChar;
+  //         canvas.renderAll();
+
+  //         const blurLevel = maxBlur * (1 - step * fadeRate);
+
+  //         fabric.util.animate({
+  //           startValue: { opacity: 0, shadow: `0 0 ${maxBlur}px rgba(0, 0, 0, 0.5)` },
+  //           endValue: { opacity: 1, shadow: `0 0 ${blurLevel}px rgba(0, 0, 0, 0.5)` },
+  //           duration: 100, // Adjust duration as needed
+  //           onChange: (value) => {
+  //             newTextObject.set('opacity', value.opacity);
+  //             newTextObject.set('shadow', value.shadow);
+  //             canvas.renderAll();
+  //           },
+  //           onComplete: () => {
+  //             charIndex++;
+  //             step = 0;
+  //             setTimeout(animateFrame, 50); // Adjust delay between characters
+  //           },
+  //         });
+
+  //         step++;
+  //       }
+  //     };
+
+  //     animateFrame();
+  //   };
+
+  //   if (showAnimation) {
+  //     animateText();
+  //   } else {
+  //     newTextObject.set({ opacity: 1 });
+  //     canvas.clear();
+  //     canvas.renderAll();
+  //   }
+
+  //   return () => {
+  //     canvas.dispose();
+  //   };
+  // }, [showAnimation]);
+
+  // useEffect(() => {
+  //   const canvasElement = canvasRef.current;
+  //   const canvas = new fabric.Canvas(canvasElement, {
+  //     width: 600,
+  //     height: 400,
+  //   });
+
+  //   const rectWidth = 500;
+  //   const rectHeight = 100;
+  //   const rectLeft = 50;
+  //   const rectTop = 150; // Adjust top position to center vertically
+  //   const newText = 'Your paragraph text';
+
+  //   // Create a rectangle to bound the text animation
+  //   const rect = new fabric.Rect({
+  //     left: rectLeft,
+  //     top: rectTop,
+  //     width: rectWidth,
+  //     height: rectHeight,
+  //     fill: 'rgba(255, 255, 255, 0)', // Transparent fill
+  //     stroke: 'blue',
+  //     strokeWidth: 2,
+  //     selectable: false,
+  //   });
+
+  //   canvas.add(rect);
+
+  //   // Create a Textbox to animate text within the rectangle
+  //   const newTextObject = new fabric.Textbox('', {
+  //     left: rectLeft,
+  //     top: rectTop,
+  //     width: rectWidth,
+  //     height: rectHeight,
+  //     fontSize: 30,
+  //     lineHeight: 1.3,
+  //     fontFamily: 'Arial',
+  //     fill: 'blue',
+  //     opacity: 0,
+  //     selectable: false,
+  //     stroke: null,
+  //     fontWeight: 'normal',
+  //     shadow: '0 0 8px rgba(0, 0, 0, 0.5)',
+  //   });
+
+  //   canvas.add(newTextObject);
+
+  //   // Function to animate text characters
+  //   const animateText = () => {
+  //     const textLength = newText.length;
+  //     const animationDuration = 100; // Duration of each character animation
+  //     const animationDelay = 50; // Delay between each character animation
+  //     const maxBlur = 8; // Maximum blur level
+
+  //     let charIndex = 0;
+
+  //     const animateNextChar = () => {
+  //       if (charIndex < textLength) {
+  //         const currentChar = newText.charAt(charIndex);
+
+  //         // Calculate blur level for this character
+  //         const blurLevel = maxBlur * Math.abs(charIndex - (textLength / 2)) / (textLength / 2);
+
+  //         fabric.util.animate({
+  //           startValue: { opacity: 0 }, // Start with opacity 0 for each character
+  //           endValue: { opacity: 1 },
+  //           duration: animationDuration,
+  //           onChange: (value) => {
+  //             newTextObject.set('opacity', value.opacity);
+  //             newTextObject.set('shadow', `0 0 ${blurLevel}px rgba(0, 0, 0, 0.5)`);
+  //             canvas.requestRenderAll(); // Request render for each character change
+  //           },
+  //           onComplete: () => {
+  //             newTextObject.text += currentChar; // Add the character to the text object
+  //             charIndex++;
+  //             setTimeout(animateNextChar, animationDelay); // Continue to the next character after delay
+  //           },
+  //         });
+  //       }
+  //     };
+
+  //     animateNextChar(); // Start animating the first character
+  //   };
+
+  //   // Start animation if showAnimation is true, otherwise show full text immediately
+  //   if (showAnimation) {
+  //     animateText();
+  //   } else {
+  //     newTextObject.set({ opacity: 1, text: newText });
+  //     canvas.renderAll(); // Render all items immediately
+  //   }
+
+  //   // Cleanup: Dispose fabric.js canvas on unmount
+  //   return () => {
+  //     canvas.dispose();
+  //   };
+  // }, [showAnimation]);
+
+
+  // useEffect(() => {
+  //   // Check if canvasRef is properly set
+  //   if (!canvasRef.current) {
+  //     console.error('Canvas reference not set');
+  //     return;
+  //   }
+
+  //   const canvas = new fabric.Canvas(canvasRef.current);
+
+  //   // Check if canvas was initialized
+  //   console.log('Canvas initialized:', canvas);
+
+  //   const text = new fabric.Text('Hello, World!', {
+  //     left: 100, // Start position off-screen to the left
+  //     top: 100,
+  //     fontSize: 36,
+  //     fontFamily: 'Arial',
+  //     selectable: false,
+  //     fill: 'black',
+  //     opacity: 0, // Start with opacity 0 (invisible)
+  //     shadow: '10px 10px 8px rgba(0,0,0,0.5)', // Initial blur effect
+  //   });
+
+  //   canvas.add(text);
+
+  //   const characters = text.text.split('');
+  //   const animationDelay = 50; // Delay between animations for each character
+
+  //   const animateCharacters = () => {
+  //     characters.forEach((char, index) => {
+  //       const charObject = new fabric.Text(char, {
+  //         left: text.left + index * 20, // Adjust left position for staggered appearance
+  //         top: text.top,
+  //         fontSize: text.fontSize,
+  //         fontFamily: text.fontFamily,
+  //         selectable: false,
+  //         fill: 'black',
+  //         opacity: 0, // Start with opacity 0
+  //         shadow: '10px 10px 8px rgba(0,0,0,0.5)', // Initial blur effect
+  //       });
+
+  //       canvas.add(charObject);
+
+  //       // Animation to move from left to right and fade in
+  //       charObject.animate('left', charObject.left + 20 + Math.random() * 10, {
+  //         duration: 1500, // Animation duration
+  //         easing: fabric.util.ease.easeOutExpo,
+  //         delay: animationDelay * index, // Delay for staggered animation
+  //         onChange: () => canvas.requestRenderAll(), // Ensure canvas updates during animation
+  //         onComplete: () => {
+  //           // Fade in the character
+  //           charObject.animate('opacity', 1, {
+  //             duration: 1000, // Fade-in duration
+  //             easing: fabric.util.ease.easeOutExpo,
+  //             onChange: () => canvas.requestRenderAll(), // Ensure canvas updates during animation
+  //             onComplete: () => {
+  //               // Remove blur effect
+  //               charObject.set('shadow', '0px 0px 0px rgba(0,0,0,0)');
+  //               canvas.renderAll();
+  //             },
+  //           });
+  //         },
+  //       });
+  //     });
+  //   };
+
+  //   // Animation to move text from left to right
+  //   text.animate('left', canvas.width + text.width, {
+  //     duration: 2000, // Animation duration
+  //     easing: fabric.util.ease.easeOutExpo,
+  //     onChange: () => canvas.requestRenderAll(), // Ensure canvas updates during animation
+  //     onComplete: animateCharacters, // Start character animations after text movement
+  //   });
+
+  //   return () => {
+  //     canvas.dispose(); // Clean up Fabric.js canvas
+  //   };
+  // }, []);
+  // useEffect(() => {
+  //   const canvasElement = canvasRef.current;
+  //   if (!canvasElement) return;
+  //   // Initialize Fabric.js canvas
+  //   const canvas = new fabric.Canvas(canvasElement, {
+  //     width: 600,
+  //     height: 400,
+  //   });
+  //   // Text content and initial properties
+  //   const newText = 'Your paragraph text';
+  //   const newTextObject = new fabric.Textbox(newText, {
+  //     left: 50,
+  //     top: 50,
+  //     width: 500,
+  //     fontSize: 30,
+  //     lineHeight: 1.3,
+  //     fontFamily: 'Arial',
+  //     fill: 'blue', // Initial fill color
+  //     opacity: 0, // Start with opacity 0 for fade-in effect
+  //   });
+  //   canvas.add(newTextObject);
+  //   // Function to animate characters with fade-in and color change effect
+  //   const animateCharacters = () => {
+  //     const totalChars = newText.length;
+  //     // Animate each character sequentially with a delay
+  //     for (let i = 0; i < totalChars; i++) {
+  //       setTimeout(() => {
+  //         fabric.util.animate({
+  //           startValue: 0,
+  //           endValue: 1,
+  //           duration: 500,
+  //           onChange: (value) => {
+  //             if (!canvas) return;
+  //             const styles = {
+  //               opacity: value,
+  //               fill: 'red', // Change fill color to red
+  //             };
+  //             // Apply styles to the specific character
+  //             newTextObject.setSelectionStyles(styles, i, i + 1);
+  //             canvas.requestRenderAll(); // Use requestRenderAll() for optimization
+  //           },
+  //           easing: fabric.util.ease.easeInOutExpo,
+  //         });
+  //       }, i * 100); // Adjust the delay time as needed for a staggered effect
+  //     }
+  //   };
+  //   // Start animation when showAnimation is true
+  //   if (showAnimation) {
+  //     fabric.util.animate({
+  //       startValue: 0,
+  //       endValue: 1,
+  //       duration: 1000, // Fade-in animation duration
+  //       onChange: (value) => {
+  //         if (!canvas) return;
+  //         newTextObject.set({ opacity: value });
+  //         canvas.requestRenderAll(); // Use requestRenderAll() for optimization
+  //       },
+  //       onComplete: () => {
+  //         animateCharacters(); // Start character animation after fade-in animation
+  //       },
+  //       easing: fabric.util.ease.easeInOutExpo,
+  //     });
+  //   } else {
+  //     newTextObject.set({ opacity: 1 }); // If showAnimation is false, set full opacity immediately
+  //     canvas.requestRenderAll(); // Use requestRenderAll() for optimization
+  //   }
+  //   // Clean up Fabric.js canvas
+  //   return () => {
+  //     if (canvas) {
+  //       canvas.dispose();
+  //     }
+  //   };
+  // }, [showAnimation])
+
+  // useEffect(() => {
+  //   const canvasElement = canvasRef.current;
+  //   const canvas = new fabric.Canvas(canvasElement, {
+  //     width: 600,
+  //     height: 400,
+  //   });
+
+  //   let newText = 'Your paragraph text';
+  //   const newTextObject = new fabric.Textbox(newText, {
+  //     left: 50,
+  //     top: 50,
+  //     width: 500,
+  //     fontSize: 30,
+  //     lineHeight: 1.3,
+  //     fontFamily: 'Arial',
+  //     fill: 'blue',
+  //     opacity: 1,
+  //   });
+
+  //   canvas.add(newTextObject);
+
+  //   if (showAnimation) {
+  //     newTextObject._renderChar = function (method, ctx, lineIndex, charIndex, _char, left, top) {
+  //       const fadeRate = 0.01; 
+  //       const maxBlur = 8;
+  //       const charObjects = [];
+  //       const lines = this?._textLines;
+  //       const lineHeights = this?.__lineHeights;
+  //       const lineWidths = this?.__lineWidths;
+
+  //       console.log("ctx",ctx)
+  //       if (!lines || !lineHeights || !lineWidths) {
+  //         console.error('Text lines or dimensions are not available.');
+  //         return;
+  //       }
+
+  //       const objectCenter = this.getCenterPoint();
+  //       const initialLeft = objectCenter.x - this.width / 2;
+  //       let yOffset = objectCenter.y - this.height / 2;
+
+  //       lines.forEach((line, lineIndex) => {
+  //         let charLeft = initialLeft;
+  //         if (lineIndex > 0) {
+  //           yOffset += lineHeights[lineIndex - 1] * this.lineHeight;
+  //         }
+  //         for (let i = 0; i < line.length; i++) {
+  //           const char = line[i];
+  //           const charObject = new fabric.Text(char, {
+  //             left: charLeft,
+  //             top: yOffset,
+  //             fontSize: this.fontSize,
+  //             fill: this.fill,
+  //             fontFamily: this.fontFamily,
+  //             opacity: 0,
+  //             shadow: `0 0 ${maxBlur}px rgba(0, 0, 0, 0.5)`,
+  //             selectable: false,
+  //             stroke: this.stroke,
+  //             fontWeight: this.fontWeight,
+  //           });
+  //           charObjects.push(charObject);
+  //           canvas.add(charObject);
+
+  //           charLeft += charObject.width;
+  //         }
+  //       });
+
+  //       let step = 0;
+  //       const fadeInOrder = Array.from({ length: charObjects.length }, (_, i) => i).sort(() => Math.random() - 0.5);
+
+  //       const animateFrame = () => {
+  //         fadeInOrder.forEach((charIndex, orderIndex) => {
+  //           if (step >= orderIndex) {
+  //             const charObject = charObjects[charIndex];
+  //             const progress = Math.min(1, (step - orderIndex) * fadeRate);
+  //             const blurLevel = maxBlur * (1 - progress);
+
+  //             charObject.set({
+  //               opacity: progress,
+  //               shadow: `0 0 ${blurLevel}px rgba(0, 0, 0, 0.5)`,
+  //             });
+  //           }
+  //         });
+
+  //         canvas.renderAll();
+
+  //         if (step < charObjects.length + 1 / fadeRate) {
+  //           step++;
+  //           requestAnimationFrame(animateFrame);
+  //         } else {
+  //           this.set({ opacity: 1 });
+  //           canvas.remove(...charObjects);
+  //           canvas.renderAll();
+  //         }
+  //       };
+
+  //       requestAnimationFrame(() => {
+  //         animateFrame();
+  //       });
+  //     };
+
+  //     newTextObject._renderChar();
+  //   } else if (showAnimation === false) {
+  //     newTextObject.set({ opacity: 1 });
+  //     canvas.clear();
+  //     canvas.renderAll();
+  //   }
+
+  //   return () => {
+  //     if (canvas) {
+  //       canvas.clear();
+  //       canvas.dispose();
+  //     }
+  //   };
+  // }, [showAnimation]);
+
+
+  // useEffect(() => {
+  //   const canvasElement = canvasRef.current;
+  //   const canvas = new fabric.Canvas(canvasElement, {
+  //     width: 600,
+  //     height: 400,
+  //   });
+
+  //   let newText = 'Your paragraph text';
+  //   const newTextObject = new fabric.Textbox(newText, {
+  //     left: 50,
+  //     top: 50,
+  //     width: 500,
+  //     fontSize: 30,
+  //     lineHeight: 1.3,
+  //     fontFamily: 'Arial',
+  //     fill: 'blue',
+  //     opacity: 1,
+  //   });
+
+  //   canvas.add(newTextObject);
+
+  //   if (showAnimation) {
+  //     newTextObject._renderChar = function (method, ctx, lineIndex, charIndex, _char, left, top) {
+  //       const canvasWidth = 600;
+  //       const canvasHeight = 400;
+
+  //       ctx.clearRect(0, 0, canvasWidth, canvasHeight); // Clear canvas
+
+  //       let newText = 'Your paragraph text';
+  //       let fontSize = 30;
+  //       let lineHeight = 1.3;
+  //       let fontFamily = 'Arial';
+  //       let fill = 'blue';
+  //       let opacity = 1;
+
+  //       if (showAnimation) {
+  //         const fadeRate = 0.01;
+  //         const maxBlur = 8;
+
+  //         let step = 0;
+  //         let yOffset = top;
+
+  //         const animateFrame = () => {
+  //           const lines = newText.split('\n');
+  //           ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+  //           lines.forEach((line, lineIndex) => {
+  //             let charLeft = left;
+  //             if (lineIndex > 0) {
+  //               yOffset += fontSize * lineHeight;
+  //             }
+  //             for (let i = 0; i < line.length; i++) {
+  //               const char = line[i];
+
+  //               const progress = Math.min(1, (step - i) * fadeRate);
+  //               const blurLevel = maxBlur * (1 - progress);
+
+  //               ctx.globalAlpha = progress;
+  //               ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+  //               ctx.shadowBlur = blurLevel;
+
+  //               ctx.font = `${fontSize}px ${fontFamily}`;
+  //               ctx.fillStyle = fill;
+  //               ctx.fillText(char, charLeft, yOffset);
+
+  //               charLeft += ctx.measureText(char).width;
+  //             }
+  //           });
+
+  //           if (step < newText.length + 1 / fadeRate) {
+  //             step++;
+  //             requestAnimationFrame(animateFrame);
+  //           } else {
+  //             ctx.globalAlpha = 1;
+  //             ctx.shadowBlur = 0;
+  //           }
+  //         };
+
+  //         animateFrame();
+  //       } else {
+  //         // No animation, draw the text normally
+  //         ctx.globalAlpha = opacity;
+  //         ctx.font = `${fontSize}px ${fontFamily}`;
+  //         ctx.fillStyle = fill;
+  //         ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+  //         ctx.shadowBlur = 8;
+
+  //         const lines = newText.split('\n');
+  //         lines.forEach((line, lineIndex) => {
+  //           ctx.fillText(line, left, top + lineIndex * fontSize * lineHeight);
+  //         });
+  //       }
+
+  //       return () => {
+  //         ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+  //       };
+  //     };
+
+  //     newTextObject._renderChar();
+  //   } else if (showAnimation === false) {
+  //     newTextObject.set({ opacity: 1 });
+  //     canvas.clear();
+  //     canvas.renderAll();
+  //   }
+
+  //   return () => {
+  //     if (canvas) {
+  //       canvas.clear();
+  //       canvas.dispose();
+  //     }
+  //   };
+  // }, [showAnimation]);
+
+
   useEffect(() => {
     const canvasElement = canvasRef.current;
     const canvas = new fabric.Canvas(canvasElement, {
       width: 600,
       height: 400,
     });
-  
+
     const newText = 'Your paragraph text';
     const newTextObject = new fabric.Textbox(newText, {
       left: 50,
@@ -1945,86 +2387,91 @@ const TextAnimationCanvas = () => {
       lineHeight: 1.3,
       fontFamily: 'Arial',
       fill: 'blue',
-      opacity: 0, // Start with opacity 0 for animation effect
+      opacity: 1,
     });
-  
-    // Add the text object to the canvas
+
     canvas.add(newTextObject);
-  
-    // Ensure canvas is rendered after adding objects
-    canvas.renderAll();
-  
-    const animateText = () => {
-      const duration = 1000; // Animation duration in milliseconds
-      const charCount = newText.length;
-      const fadeRate = duration / charCount;
-      const maxBlur = 8;
-  
-      let step = 0;
-      const animateFrame = () => {
-        const textObjects = newTextObject._objects;
-        if (!textObjects) {
-          console.warn('textObjects is not available yet. Waiting...');
-          setTimeout(animateFrame, 100); // Retry after a short delay
-          return;
-        }
-  
-        console.log("textObjects", textObjects); // Log to track the state of textObjects
-  
-        if (step < charCount) {
-          const char = newText.charAt(step);
-          const charIndex = newTextObject.text.indexOf(char);
-  
-          if (charIndex !== -1) {
-            const object = textObjects.find(obj => obj.type === 'text' && obj.lineIndex === 0 && obj.charIndex === charIndex);
-  
-            if (object) {
-              const progress = (step + 1) / charCount;
-              const blurLevel = maxBlur * (1 - progress);
-              const opacity = progress;
-  
-              object.set('opacity', opacity);
-              object.setShadow(`0 0 ${blurLevel}px rgba(0, 0, 0, 0.5)`);
-  
-              canvas.renderAll(); // Render canvas after modifying objects
-  
-              step++;
-              setTimeout(animateFrame, fadeRate);
-            }
-          }
-        } else {
-          newTextObject.set('opacity', 1); // Ensure final opacity
-          newTextObject._objects.forEach(obj => {
-            if (obj.type === 'text') {
-              obj.setShadow(null); // Clear shadow if needed
-            }
-          });
-  
-          canvas.renderAll(); // Final render after animation
-        }
-      };
-  
-      animateFrame(); // Start animation loop
-    };
-  
-    // Trigger animation if showAnimation flag is true
+
     if (showAnimation) {
-      animateText();
-    } else {
-      newTextObject.set('opacity', 1); // Ensure text is visible if animation is not triggered
-      canvas.renderAll(); // Render canvas if animation is not needed
+      newTextObject._renderChar = function (method, ctx, left, top, _char, styles) {
+        console.log("ctx, left, top, _char, styles", ctx, left, top, _char, styles)
+        const canvasWidth = 600;
+        const canvasHeight = 400;
+        const lines = newText.split('\n');
+
+        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+        if (showAnimation) {
+          const fadeRate = 0.01;
+          const maxBlur = 8;
+
+          let step = 0;
+          let yOffset = top;
+
+          const fontSize = styles.fontSize || 30;
+          const lineHeight = styles.lineHeight || 1.3;
+          const fontFamily = styles.fontFamily || 'Arial';
+          const fill = styles.fill || 'blue';
+
+          const animateFrame = () => {
+            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+            lines.forEach((line, lineIndex) => {
+              let charLeft = left;
+              if (lineIndex > 0) {
+                yOffset += fontSize * lineHeight;
+              }
+              for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+
+                const progress = Math.min(1, (step - i) * fadeRate);
+                const blurLevel = maxBlur * (1 - progress);
+
+                ctx.globalAlpha = progress;
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+                ctx.shadowBlur = blurLevel;
+
+                ctx.font = `${fontSize}px ${fontFamily}`;
+                ctx.fillStyle = fill;
+                ctx.fillText(char, charLeft, yOffset);
+
+                charLeft += ctx.measureText(char).width;
+              }
+            });
+
+            if (step < newText.length + 1 / fadeRate) {
+              step++;
+              requestAnimationFrame(animateFrame);
+            } else {
+              ctx.globalAlpha = 1;
+              ctx.shadowBlur = 0;
+            }
+          };
+
+          animateFrame();
+        } else {
+          ctx.globalAlpha = styles.opacity || 1;
+          ctx.font = `${styles.fontSize || 30}px ${styles.fontFamily || 'Arial'}`;
+          ctx.fillStyle = styles.fill || 'blue';
+          ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+          ctx.shadowBlur = 8;
+
+          lines.forEach((line, lineIndex) => {
+            ctx.fillText(line, left, top + lineIndex * (styles.fontSize || 30) * (styles.lineHeight || 1.3));
+          });
+        }
+
+        return () => {
+          ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+        };
+      };
     }
-  
+
+    newTextObject._renderChar('method', canvas.getContext('2d'), newTextObject.left, newTextObject.top, newTextObject.text, newTextObject);
+
     return () => {
-      canvas.dispose(); // Clean up Fabric.js canvas instance
+      canvas.dispose();
     };
   }, [showAnimation]);
-  
-
-
-
-
-
 
 
   const toggleAnimation = () => {
