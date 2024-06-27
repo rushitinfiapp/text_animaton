@@ -730,9 +730,451 @@ const AnimatedTextCanvas = () => {
     // }, [showAnimation]);
 
 
+    // useEffect(() => {
+    //     const canvasElement = canvasRef.current;
+    //     const canvas = new fabric.Canvas(canvasElement, {
+    //         width: 600,
+    //         height: 400,
+    //     });
+
+    //     const initialText = "Your paragraph text\nYour paragraph text\nYour paragraph text\nYour paragraph text\nYour paragraph text\nYour paragraph text";
+    //     const newTextObject = new fabric.Textbox(initialText, {
+    //         left: 50,
+    //         top: 50,
+    //         width: 400,
+    //         fontSize: 30,
+    //         lineHeight: 1,
+    //         fontFamily: 'Arial',
+    //         fill: 'black',
+    //         opacity: 0,
+    //     });
+
+    //     newTextObject.setSelectionStyles({ fontSize: 20 }, 0, 5);
+    //     canvas.add(newTextObject);
+
+    //     const textLines = initialText.split('\n');
+    //     let animationFrameId = null;
+    //     let step = 0;
+    //     const fadeInAni = textLines.map((line) =>
+    //         Array.from({ length: line.length }, (_, i) => i).sort(() => Math.random() - 0.5)
+    //     );
+    //     const charPositions = textLines.map((line, lineIndex) => {
+    //         const positions = [];
+    //         let xPos = newTextObject.left;
+    //         for (let i = 0; i < line.length; i++) {
+    //             const char = line[i];
+    //             const width = canvas.getContext().measureText(char).width;
+    //             positions.push({
+    //                 char,
+    //                 x: xPos,
+    //                 opacity: 0,
+    //                 scale: 0.5,
+    //             });
+    //             xPos += width + 10;
+    //         }
+    //         return positions;
+    //     });
+    //     console.log("charPositions", charPositions)
+
+    //     newTextObject._renderChar = function (method, ctx, lineIndex, charIndex, _char, left, top) {
+    //         console.log("efrdegd", method, _char,)
+    //         const { char, opacity, scale } = charPositions[lineIndex][charIndex];
+    //         const newOpacity = Math.min(1, opacity + 0.05);
+    //         const newScale = Math.min(1, scale + 0.025);
+    //         const blurAmount = 5 * (1 - newOpacity);
+
+
+    //         ctx.save();
+    //         ctx.translate(left, top);
+    //         ctx.scale(newScale, newScale);
+    //         ctx.font = `${newTextObject.fontWeight} ${newTextObject.fontSize}px ${newTextObject.fontFamily}`;
+    //         ctx.fillStyle = newTextObject.fill;
+    //         ctx.globalAlpha = newOpacity;
+    //         ctx.filter = `blur(${blurAmount}px)`;
+    //         ctx.fillText(_char, 0, 0);
+    //         ctx.restore();
+
+    //         charPositions[lineIndex][charIndex].opacity = newOpacity;
+    //         charPositions[lineIndex][charIndex].scale = newScale;
+    //     };
+
+
+    //     const animate = () => {
+    //         canvas.clear();
+    //         let animationComplete = true;
+
+    //         textLines.forEach((line, lineIndex) => {
+    //             newTextObject.lineHeight = Math.min(1.3, newTextObject.lineHeight + 0.01);
+
+    //             const yPos = newTextObject.top + lineIndex * newTextObject.fontSize * newTextObject.lineHeight + newTextObject.fontSize / 2;
+
+    //             for (let i = 0; i < line.length; i++) {
+    //                 const charIndex = fadeInAni[lineIndex][i];
+    //                 const { char, x: baseXPos } = charPositions[lineIndex][charIndex];
+
+    //                 if (step >= i) {
+    //                     newTextObject._renderChar('fillText', canvas.getContext(), lineIndex, charIndex, char, baseXPos, yPos);
+
+    //                     if (charPositions[lineIndex][charIndex].opacity < 1) {
+    //                         animationComplete = false;
+    //                     }
+    //                 }
+    //             }
+    //         });
+
+    //         if (!animationComplete || newTextObject.lineHeight < 1.3) {
+    //             step++;
+    //             animationFrameId = requestAnimationFrame(animate);
+    //         } else {
+    //             console.log('Animation complete');
+    //             setShowAnimation(false);
+    //         }
+    //     };
+    //     if (showAnimation) {
+    //         animate();
+    //     } else {
+    //         canvas.renderAll();
+    //     }
+
+    //     return () => {
+    //         if (animationFrameId) {
+    //             cancelAnimationFrame(animationFrameId);
+    //         }
+    //         canvas.dispose();
+    //     };
+    // }, [showAnimation]);
+
+    //    useEffect(() => {
+    //     const canvasElement = canvasRef.current;
+    //     const canvas = new fabric.Canvas(canvasElement, {
+    //         width: 600,
+    //         height: 400,
+    //     });
+
+    //     const initialText = "Your paragraph text\nYour paragraph text\nYour paragraph text\nYour paragraph text\nYour paragraph text\nYour paragraph text";
+    //     const newTextObject = new fabric.Textbox(initialText, {
+    //         left: 50,
+    //         top: 50,
+    //         width: 400,
+    //         fontSize: 30,
+    //         lineHeight: 1,
+    //         fontFamily: 'Arial',
+    //         fill: 'black',
+    //         opacity: 1,
+    //     });
+
+    //     // newTextObject.setSelectionStyles({ fontSize: 20 }, 0, 5);
+    //     canvas.add(newTextObject);
+
+    //     const textLines = initialText.split('\n');
+    //     let animationFrameId = null;
+    //     let step = 0;
+    //     const fadeInAni = textLines.map((line) =>
+    //         Array.from({ length: line.length }, (_, i) => i).sort(() => Math.random() - 0.5)
+    //     );
+
+    //     newTextObject._renderChar = function (method, ctx, lineIndex, charIndex, _char, left, top) {
+    //         const charFadeStep = step - charIndex;
+    //         const opacity = Math.min(1, charFadeStep * 0.05);
+    //         const scale = Math.min(1, 0.5 + charFadeStep * 0.025);
+    //         const blurAmount = 5 * (1 - opacity);
+
+    //         ctx.save();
+    //         ctx.translate(left, top);
+    //         ctx.scale(scale, scale);
+    //         ctx.font = `${newTextObject.fontWeight} ${newTextObject.fontSize}px ${newTextObject.fontFamily}`;
+    //         ctx.fillStyle = newTextObject.fill;
+    //         ctx.globalAlpha = opacity;
+    //         ctx.filter = `blur(${blurAmount}px)`;
+    //         ctx.fillText(_char, 0, 0);
+    //         ctx.restore();
+    //     };
+
+    //     const animate = () => {
+    //         canvas.clear();
+    //         let animationComplete = true;
+
+    //         textLines.forEach((line, lineIndex) => {
+    //             newTextObject.lineHeight = Math.min(1.3, newTextObject.lineHeight + 0.01);
+
+    //             const yPos = newTextObject.top + lineIndex * newTextObject.fontSize * newTextObject.lineHeight + newTextObject.fontSize / 2;
+
+    //             let xPos = newTextObject.left;
+
+    //             for (let i = 0; i < line.length; i++) {
+    //                 const charIndex = i; // Sequential index for typewriter effect
+    //                 const char = line[charIndex];
+
+    //                 if (step >= charIndex) {
+    //                     newTextObject._renderChar('fillText', canvas.getContext(), lineIndex, charIndex, char, xPos, yPos);
+
+    //                     if (step < charIndex + 20) {
+    //                         animationComplete = false;
+    //                     }
+    //                 }
+
+    //                 const charWidth = canvas.getContext().measureText(char).width;
+    //                 xPos += charWidth + 10; // Adjust the 10 as needed for spacing
+    //             }
+    //         });
+
+    //         if (!animationComplete || newTextObject.lineHeight < 1.3) {
+    //             step++;
+    //             animationFrameId = requestAnimationFrame(animate);
+    //         } else {
+    //             console.log('Animation complete');
+    //             setShowAnimation(false);
+    //         }
+    //     };
+
+    //     if (showAnimation) {
+    //         animate();
+    //     } else {
+    //         canvas.renderAll();
+    //     }
+
+    //     return () => {
+    //         if (animationFrameId) {
+    //             cancelAnimationFrame(animationFrameId);
+    //         }
+    //         canvas.dispose();
+    //     };
+    // }, [showAnimation]);
+
+    // useEffect(() => {
+    //     const canvasElement = canvasRef.current;
+    //     const canvas = new fabric.Canvas(canvasElement, {
+    //         width: 600,
+    //         height: 400,
+    //     });
+
+    //     const initialText = "Your paragraph text\nYour paragraph text\nYour paragraph text\nYour paragraph text\nYour paragraph text\nYour paragraph text";
+    //     const newTextObject = new fabric.Textbox(initialText, {
+    //         left: 50,
+    //         top: 50,
+    //         width: 400,
+    //         fontSize: 30,
+    //         lineHeight: 1,
+    //         fontFamily: 'Arial',
+    //         fill: 'black',
+    //         opacity: 0,
+    //     });
+
+    //     newTextObject.setSelectionStyles({ fontSize: 20 }, 0, 5);
+    //     canvas.add(newTextObject);
+
+    //     const textLines = newTextObject.textLines
+    //     console.log("textLines", textLines)
+    //     const charPositions = textLines.map((line, lineIndex) => {
+    //         const positions = [];
+    //         let xPos = newTextObject.left;
+    //         for (let i = 0; i < line.length; i++) {
+    //             const char = line[i];
+    //             const width = canvas.getContext().measureText(char).width;
+    //             positions.push({
+    //                 char,
+    //                 x: xPos,
+    //                 opacity: 0,
+    //                 scale: 0.5,
+    //             });
+    //             xPos += width + 10;
+    //         }
+    //         return positions;
+    //     });
+
+    //     newTextObject._renderChar = function (method, ctx, lineIndex, charIndex, _char, left, top) {
+    //         console.log("efrdegd", method, _char,)
+    //         const { char, opacity, scale } = charPositions[lineIndex][charIndex];
+    //         const newOpacity = Math.min(1, opacity + 0.05);
+    //         const newScale = Math.min(1, scale + 0.025);
+    //         const blurAmount = 5 * (1 - newOpacity);
+
+    //         ctx.save();
+    //         ctx.translate(left, top);
+    //         ctx.scale(newScale, newScale);
+    //         ctx.font = `${newTextObject.fontWeight} ${newTextObject.fontSize}px ${newTextObject.fontFamily}`;
+    //         ctx.fillStyle = newTextObject.fill;
+    //         ctx.globalAlpha = newOpacity;
+    //         ctx.filter = `blur(${blurAmount}px)`;
+    //         ctx.fillText(_char, 0, 0);
+    //         ctx.restore();
+
+    //         charPositions[lineIndex][charIndex].opacity = newOpacity;
+    //         charPositions[lineIndex][charIndex].scale = newScale;
+    //     };
+    //     let animationFrameId = null;
+    //     if (showAnimation) {
+    //         newTextObject.animate('opacity', '1', {
+    //             duration: 3000,
+    //             onChange: canvas.renderAll.bind(canvas),
+    //             onComplete: function () {
+    //                 const textLines = initialText.split('\n');
+    //                 const charPositions = textLines.map((line, lineIndex) => {
+    //                     const positions = [];
+    //                     let xPos = newTextObject.left;
+    //                     for (let i = 0; i < line.length; i++) {
+    //                         const char = line[i];
+    //                         const width = canvas.getContext().measureText(char).width;
+    //                         positions.push({
+    //                             char,
+    //                             x: xPos,
+    //                             opacity: 0,
+    //                             scale: 0.5,
+    //                         });
+    //                         xPos += width + 10;
+    //                     }
+    //                     return positions;
+    //                 });
+
+    //                 const fadeInAni = textLines.map((line) =>
+    //                     Array.from({ length: line.length }, (_, i) => i).sort(() => Math.random() - 0.5)
+    //                 );
+
+    //                 let step = 0;
+
+
+
+    //                 const animate = () => {
+    //                     canvas.clear();
+    //                     let animationComplete = true;
+
+    //                     textLines.forEach((line, lineIndex) => {
+    //                         newTextObject.lineHeight = Math.min(1.3, newTextObject.lineHeight + 0.01);
+
+    //                         const yPos = newTextObject.top + lineIndex * newTextObject.fontSize * newTextObject.lineHeight + newTextObject.fontSize / 2;
+
+    //                         for (let i = 0; i < line.length; i++) {
+    //                             const charIndex = fadeInAni[lineIndex][i];
+    //                             const { char, x: baseXPos } = charPositions[lineIndex][charIndex];
+
+    //                             if (step >= i) {
+    //                                 newTextObject._renderChar('fillText', canvas.getContext(), lineIndex, charIndex, char, baseXPos, yPos);
+
+    //                                 if (charPositions[lineIndex][charIndex].opacity < 1) {
+    //                                     animationComplete = false;
+    //                                 }
+    //                             }
+    //                         }
+    //                     });
+
+    //                     if (!animationComplete || newTextObject.lineHeight < 1.3) {
+    //                         step++;
+    //                         animationFrameId = requestAnimationFrame(animate);
+    //                     } else {
+    //                         console.log('Animation complete');
+    //                         setShowAnimation(false);
+    //                     }
+    //                 };
+
+    //                 animate();
+    //             },
+    //             easing: fabric.util.ease.easeOutBounce,
+    //         });
+    //     } else {
+    //         canvas.renderAll();
+    //     }
+
+    //     return () => {
+    //         if (animationFrameId) {
+    //             cancelAnimationFrame(animationFrameId);
+    //         }
+    //         canvas.dispose();
+    //     };
+    // }, [showAnimation]);
+
+
+    // useEffect(()=> {
+    //     const canvas = new fabric.Canvas("canvasElement", {
+    //         width: 600,
+    //         height: 400,
+    //     });
+
+    //     const initialText = "Your paragraph text\nYour paragraph text\nYour paragraph text\nYour paragraph text\nYour paragraph text\nYour paragraph text";
+    //     const newTextObject = new fabric.Textbox(initialText, {
+    //         left: 50,
+    //         top: 50,
+    //         width: 400,
+    //         fontSize: 30,
+    //         lineHeight: 1,
+    //         fontFamily: 'Arial',
+    //         fill: 'black',
+    //         opacity: 1,
+    //     });
+
+    //     newTextObject.setSelectionStyles({ fontSize: 20 }, 0, 5);
+    //     canvas.add(newTextObject);
+
+    //     newTextObject._renderChar =  (method, ctx, lineIndex, charIndex, _char, left, top) => {
+
+    //         console.log("effasfsardegd", {method, ctx, lineIndex, charIndex, _char, left, top});
+
+
+    //         const decl = newTextObject._getStyleDeclaration(lineIndex, charIndex),
+    //         fullDecl = newTextObject.getCompleteStyleDeclaration(lineIndex, charIndex),
+    //         shouldFill = method === 'fillText' && fullDecl.fill,
+    //         shouldStroke =
+    //           method === 'strokeText' && fullDecl.stroke && fullDecl.strokeWidth;
+
+    //       if (!shouldStroke && !shouldFill) {
+    //         return;
+    //       }
+    //       ctx.save();
+
+    //       ctx.font = newTextObject._getFontDeclaration(fullDecl);
+
+    //      if (decl) {
+    //         if (decl.textBackgroundColor) {
+    //             newTextObject._removeShadow(ctx);
+    //           }
+    //           if (decl.deltaY) {
+    //             top += decl.deltaY;
+    //           }
+    //      }
+
+    //       if (shouldFill) {
+    //         const fillOffsets = newTextObject._setFillStyles(ctx, fullDecl);
+    //         ctx.fillText(
+    //           _char,
+    //           left - fillOffsets.offsetX,
+    //           top - fillOffsets.offsetY
+    //         );
+    //       }
+
+    //       if (shouldStroke) {
+    //         const strokeOffsets = newTextObject._setStrokeStyles(ctx, fullDecl);
+    //         ctx.strokeText(
+    //           _char,
+    //           left - strokeOffsets.offsetX,
+    //           top - strokeOffsets.offsetY
+    //         );
+    //       }
+
+    //       ctx.restore();
+
+    //         // // newAnimateObj = { ctx: ctx, lineIndex: lineIndex, charIndex: charIndex, char: _char, left: left, top: top }
+    //         // const { char, opacity, scale } = charPositions[lineIndex][charIndex];
+    //         // const newOpacity = Math.min(1, opacity + 0.05);
+    //         // const newScale = Math.min(1, scale + 0.025);
+    //         // const blurAmount = 5 * (1 - newOpacity);
+
+    //         // ctx.save();
+    //         // ctx.translate(left, top);
+    //         // ctx.scale(newScale, newScale);
+    //         // ctx.fillStyle = newTextObject.fill;
+    //         // ctx.globalAlpha = newOpacity;
+    //         // ctx.filter = `blur(${blurAmount}px)`;
+    //         // ctx.fillText(_char, 0, 0);
+    //         // ctx.restore();
+
+    //         // charPositions[lineIndex][charIndex].opacity = newOpacity;
+    //         // charPositions[lineIndex][charIndex].scale = newScale;
+    //         // // opacity = newOpacity
+    //         // // scale = newScale
+    //     };
+    // }, [])
+
     useEffect(() => {
-        const canvasElement = canvasRef.current;
-        const canvas = new fabric.Canvas(canvasElement, {
+        const canvas = new fabric.Canvas("canvasElement", {
             width: 600,
             height: 400,
         });
@@ -746,124 +1188,172 @@ const AnimatedTextCanvas = () => {
             lineHeight: 1,
             fontFamily: 'Arial',
             fill: 'black',
-            opacity: 0,
+            opacity: 1,
         });
 
+        newTextObject.setSelectionStyles({ fontSize: 20 }, 0, 5);
         canvas.add(newTextObject);
 
-        let animationFrameId = null;
-        if (showAnimation) {
-            newTextObject.animate('opacity', '1', {
-                duration: 3000,
-                onChange: canvas.renderAll.bind(canvas),
-                onComplete: function () {
-                    const textLines = initialText.split('\n');
-                    const charPositions = textLines.map((line, lineIndex) => {
-                        const positions = [];
-                        let xPos = newTextObject.left;
-                        for (let i = 0; i < line.length; i++) {
-                            const char = line[i];
-                            const width = canvas.getContext().measureText(char).width;
-                            positions.push({
-                                char,
-                                x: xPos,
-                                opacity: 0,
-                                scale: 0.5,
-                            });
-                            xPos += width + 10;
-                        }
-                        return positions;
-                    });
+        newTextObject._renderChar = (method, ctx, lineIndex, charIndex, _char, left, top) => {
 
-                    const fadeInAni = textLines.map((line) =>
-                        Array.from({ length: line.length }, (_, i) => i).sort(() => Math.random() - 0.5)
-                    );
+            console.log("effasfsardegd", { method, ctx, lineIndex, charIndex, _char, left, top });
 
-                    let step = 0;
+            console.log("char", _char)
 
-                    newTextObject._renderChar = function (method, ctx, lineIndex, charIndex, _char, left, top) {
-                        const { char, opacity, scale } = charPositions[lineIndex][charIndex];
-                        const newOpacity = Math.min(1, opacity + 0.05);
-                        const newScale = Math.min(1, scale + 0.025);
-                        const blurAmount = 5 * (1 - newOpacity);
+            const textLines = newTextObject?.textLines
+            console.log("textLines", textLines)
+            const decl = newTextObject._getStyleDeclaration(lineIndex, charIndex),
+                fullDecl = newTextObject.getCompleteStyleDeclaration(lineIndex, charIndex),
+                shouldFill = method === 'fillText' && fullDecl.fill,
+                shouldStroke =
+                    method === 'strokeText' && fullDecl.stroke && fullDecl.strokeWidth;
 
-                        ctx.save();
-                        ctx.translate(left, top);
-                        ctx.scale(newScale, newScale);
-                        ctx.font = `${newTextObject.fontWeight} ${newTextObject.fontSize}px ${newTextObject.fontFamily}`;
-                        ctx.fillStyle = newTextObject.fill;
-                        ctx.globalAlpha = newOpacity;
-                        ctx.filter = `blur(${blurAmount}px)`;
-                        ctx.fillText(_char, 0, 0);
-                        ctx.restore();
-
-                        charPositions[lineIndex][charIndex].opacity = newOpacity;
-                        charPositions[lineIndex][charIndex].scale = newScale;
-                    };
-
-                    const animate = () => {
-                        canvas.clear();
-                        let animationComplete = true;
-
-                        textLines.forEach((line, lineIndex) => {
-                            newTextObject.lineHeight = Math.min(1.3, newTextObject.lineHeight + 0.01);
-
-                            const yPos = newTextObject.top + lineIndex * newTextObject.fontSize * newTextObject.lineHeight + newTextObject.fontSize / 2;
-
-                            for (let i = 0; i < line.length; i++) {
-                                const charIndex = fadeInAni[lineIndex][i];
-                                const { char, x: baseXPos } = charPositions[lineIndex][charIndex];
-
-                                if (step >= i) {
-                                    newTextObject._renderChar('fillText', canvas.getContext(), lineIndex, charIndex, char, baseXPos, yPos);
-
-                                    if (charPositions[lineIndex][charIndex].opacity < 1) {
-                                        animationComplete = false;
-                                    }
-                                }
-                            }
-                        });
-
-                        if (!animationComplete || newTextObject.lineHeight < 1.3) {
-                            step++;
-                            animationFrameId = requestAnimationFrame(animate);
-                        } else {
-                            console.log('Animation complete');
-                            setShowAnimation(false);
-                        }
-                    };
-
-                    animate();
-                },
-                easing: fabric.util.ease.easeOutBounce,
-            });
-        } else {
-            canvas.renderAll();
-        }
-
-        return () => {
-            if (animationFrameId) {
-                cancelAnimationFrame(animationFrameId);
+            if (!shouldStroke && !shouldFill) {
+                return;
             }
-            canvas.dispose();
+            ctx.save();
+
+            ctx.font = newTextObject._getFontDeclaration(fullDecl);
+
+            if (decl) {
+                if (decl.textBackgroundColor) {
+                    newTextObject._removeShadow(ctx);
+                }
+                if (decl.deltaY) {
+                    top += decl.deltaY;
+                }
+            }
+
+            if (shouldFill) {
+                const fillOffsets = newTextObject._setFillStyles(ctx, fullDecl);
+                ctx.fillText(
+                    _char,
+                    left - fillOffsets.offsetX,
+                    top - fillOffsets.offsetY
+                );
+            }
+
+            if (shouldStroke) {
+                const strokeOffsets = newTextObject._setStrokeStyles(ctx, fullDecl);
+                ctx.strokeText(
+                    _char,
+                    left - strokeOffsets.offsetX,
+                    top - strokeOffsets.offsetY
+                );
+            }
+
+            ctx.restore();
         };
-    }, [showAnimation]);
+    }, [])
 
 
-    const toggleAnimation = () => {
-        setShowAnimation((prev) => !prev);
-    };
+    // useEffect(() => {
 
-    useEffect(() => {
-        console.log("showAnimation", showAnimation)
-    }, [showAnimation])
+
+    //     let step = 0;
+    //     let animationFrameId = null;
+    //     const textLines = newTextObject.textLines
+    //     const charPositions = textLines.map((line, lineIndex) => {
+    //         const positions = [];
+    //         let xPos = newTextObject.left;
+    //         for (let i = 0; i < line.length; i++) {
+    //             const char = line[i];
+    //             const width = canvas.getContext().measureText(char).width;
+    //             positions.push({
+    //                 char,
+    //                 x: xPos,
+    //                 opacity: 0,
+    //                 scale: 0.5,
+    //             });
+    //             xPos += width + 10;
+    //         }
+    //         return positions;
+    //     });
+    //     const fadeInAni = textLines.map((line) =>
+    //         Array.from({ length: line.length }, (_, i) => i).sort(() => Math.random() - 0.5)
+    //     );
+    //     // let opacity = 0.5
+    //     // let scale = 0.5
+    //     let newAnimateObj = { ctx: "", lineIndex: "", charIndex: "", char: "", left: "", top: "" };
+    //     newTextObject._renderChar = function (method, ctx, lineIndex, charIndex, _char, left, top) {
+    //         console.log("efrdegd", {method, ctx, lineIndex, charIndex, _char, left, top})
+    //         // newAnimateObj = { ctx: ctx, lineIndex: lineIndex, charIndex: charIndex, char: _char, left: left, top: top }
+    //         const { char, opacity, scale } = charPositions[lineIndex][charIndex];
+    //         const newOpacity = Math.min(1, opacity + 0.05);
+    //         const newScale = Math.min(1, scale + 0.025);
+    //         const blurAmount = 5 * (1 - newOpacity);
+
+    //         ctx.save();
+    //         ctx.translate(left, top);
+    //         ctx.scale(newScale, newScale);
+    //         ctx.fillStyle = newTextObject.fill;
+    //         ctx.globalAlpha = newOpacity;
+    //         ctx.filter = `blur(${blurAmount}px)`;
+    //         ctx.fillText(_char, 0, 0);
+    //         ctx.restore();
+
+    //         charPositions[lineIndex][charIndex].opacity = newOpacity;
+    //         charPositions[lineIndex][charIndex].scale = newScale;
+    //         // opacity = newOpacity
+    //         // scale = newScale
+    //     };
+    //     const animate = () => {
+    //         canvas.clear();
+    //         let animationComplete = true;
+
+    // textLines.forEach((line, lineIndex) => {
+    //     newTextObject.lineHeight = Math.min(1.3, newTextObject.lineHeight + 0.01);
+
+    //     const yPos = newTextObject.top + lineIndex * newTextObject.fontSize * newTextObject.lineHeight + newTextObject.fontSize / 2;
+
+    //     for (let i = 0; i < line.length; i++) {
+    //         const charIndex = fadeInAni[lineIndex][i];
+    //         const { char, x: baseXPos } = charPositions[lineIndex][charIndex];
+    //         if (step >= i) {
+    //             newTextObject._renderChar('fillText', canvas.getContext(), lineIndex, charIndex, char, baseXPos, yPos);
+
+    //             if (charPositions[lineIndex][charIndex].opacity < 1) {
+    //                 animationComplete = false;
+    //             }
+    //         }
+    //     }
+    // });
+
+    //         if (!animationComplete || newTextObject.lineHeight < 1.3) {
+    //             step++;
+    //             animationFrameId = requestAnimationFrame(animate);
+    //         } else {
+    //             console.log('Animation complete');
+    //             setShowAnimation(false);
+    //         }
+    //     };
+    //     if (showAnimation) {
+    //         animate();
+    //     } else {
+    //         canvas.renderAll();
+    //     }
+
+    //     return () => {
+    //         if (animationFrameId) {
+    //             cancelAnimationFrame(animationFrameId);
+    //         }
+    //         canvas.dispose();
+    //     };
+    // }, [showAnimation]);
+    // const toggleAnimation = () => {
+    //     setShowAnimation((prev) => !prev);
+    // };
+
+    // useEffect(() => {
+    //     console.log("showAnimation", showAnimation)
+    // }, [showAnimation])
 
     return (
         <>
-            <canvas ref={canvasRef} />
-            <button onClick={toggleAnimation}>
+            <canvas id="canvasElement" />
+            {/* <button onClick={toggleAnimation}>
                 {showAnimation ? 'Stop Animation' : 'Start Animation'}
-            </button>
+            </button> */}
         </>
     );
 };
